@@ -3,64 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JGA 8-BIT CENTER</title>
+    <title>POKÉMON JGA EDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* ============ 8-BIT DESIGN START ============ */
+        /* ============ POKÉMON 8-BIT STIL START ============ */
         :root {
-            --retro-bg: #e0e0e0;        
-            --retro-container: #ffffff; 
-            --retro-text: #222222;      
-            --retro-border: #000000;    
-            --retro-yellow: #ffcc00;    
-            --retro-red: #ff0000;       
-            --retro-green: #00cc00;     
-            --retro-blue: #0000ff;      
-            --retro-shadow: 4px 4px 0px #000000; 
+            --poke-bg-blue: #243d5c;    /* Dunkelblaues Gameboy Menü */
+            --poke-ui-blue: #305082;    /* Rahmenfarbe der Dialogboxen */
+            --poke-white: #f8f8f8;      /* Hintergrund Textboxen */
+            --poke-text: #222222;       /* Fast schwarzer Text */
+            --poke-yellow: #f8d030;     /* Pikachu Gelb (Titel) */
+            --poke-red: #ff0000;        /* Rote Edition */
+            --poke-green: #48c048;      /* Grüne Edition / Korrekt */
+            --poke-shadow: 4px 4px 0px #000; /* Harter Pixelschatten */
         }
 
         body {
             font-family: 'Press Start 2P', cursive, monospace; 
-            background-color: var(--retro-bg);
-            color: var(--retro-text);
+            background-color: var(--poke-bg-blue);
+            /* Ein kleines Raster-Muster im Hintergrund für mehr Retro-Feeling */
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 4px 4px;
+            color: var(--poke-text);
             text-align: center;
             padding: 20px;
             margin: 0;
             image-rendering: pixelated; 
             font-size: 12px; 
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
         h1 { 
-            color: var(--retro-text); 
-            text-shadow: 2px 2px 0px var(--retro-yellow);
-            font-size: 20px;
-            margin-bottom: 30px;
+            /* Der typische Pokémon-Titel-Look: Gelb mit dickem blauen Rand */
+            color: var(--poke-yellow); 
+            text-shadow: 3px 3px 0 #243d5c, -3px -3px 0 #243d5c, 3px -3px 0 #243d5c, -3px 3px 0 #243d5c, 5px 5px 0 #000;
+            font-size: 22px;
+            margin-bottom: 35px;
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
         h2, h3 {
-            color: var(--retro-text);
-            font-size: 16px;
+            color: var(--poke-text);
+            font-size: 14px;
             margin-top: 25px;
+            text-transform: uppercase;
         }
 
+        /* Der Haupt-Container sieht aus wie eine große Dialogbox */
         .container {
-            background-color: var(--retro-container);
-            border: 4px solid var(--retro-border); 
+            background-color: var(--poke-white);
+            border: 4px solid var(--poke-ui-blue); 
+            /* Doppelter Rahmen-Effekt wie im Spiel */
+            box-shadow: 0 0 0 4px #000, inset 0 0 0 2px #000; 
             padding: 25px;
-            box-shadow: var(--retro-shadow); 
             max-width: 500px;
             margin: 0 auto;
             position: relative;
-            border-radius: 0; 
+            border-radius: 4px; 
         }
         
-        /* RETRO BUTTONS */
+        /* RETRO BUTTONS IM POKEMON STIL */
         .btn {
             font-family: 'Press Start 2P', cursive, monospace;
-            background-color: #cccccc; 
-            color: var(--retro-text);
-            border: 4px solid var(--retro-border);
+            background-color: var(--poke-white); 
+            color: var(--poke-text);
+            border: 3px solid var(--poke-ui-blue);
             padding: 15px 10px;
             margin: 12px 0;
             font-size: 12px;
@@ -68,115 +77,148 @@
             width: 100%;
             transition: all 0.1s;
             text-transform: uppercase;
-            box-shadow: inset -4px -4px 0px #999999, inset 4px 4px 0px #ffffff; 
-            border-radius: 0;
+            /* Pixeliger 3D Effekt */
+            box-shadow: inset -3px -3px 0px #aaa, inset 3px 3px 0px #fff, 3px 3px 0 #000; 
+            border-radius: 4px;
         }
-        .btn:hover { background-color: #bbbbbb; }
+        .btn:hover { background-color: #e0e0e0; }
         .btn:active { 
-            transform: translate(2px, 2px); 
-            box-shadow: inset -2px -2px 0px #999999, inset 2px 2px 0px #ffffff;
+            transform: translate(3px, 3px); 
+            box-shadow: inset -2px -2px 0px #aaa, inset 2px 2px 0px #fff;
         }
         
-        .btn.primary { background-color: var(--retro-yellow); box-shadow: inset -4px -4px 0px #cc9900, inset 4px 4px 0px #ffff66; }
-        .btn.quiz-btn { background-color: var(--retro-blue); color: white; box-shadow: inset -4px -4px 0px #000099, inset 4px 4px 0px #6666ff; }
-        .btn.save-btn { background-color: var(--retro-green); color: white; box-shadow: inset -4px -4px 0px #006600, inset 4px 4px 0px #66ff66; }
-        .btn.back-btn { background-color: #777; color: white; margin-top: 30px; box-shadow: inset -4px -4px 0px #444, inset 4px 4px 0px #aaa;}
+        /* Spezielle Button Farben (Editionen-Style) */
+        /* Gelbe Edition (Kasse) */
+        .btn.primary { background-color: var(--poke-yellow); color: black; box-shadow: inset -3px -3px 0px #c7a500, inset 3px 3px 0px #ffff66, 3px 3px 0 #000; }
+        /* Rote Edition (Quiz) */
+        .btn.quiz-btn { background-color: var(--poke-red); color: white; box-shadow: inset -3px -3px 0px #990000, inset 3px 3px 0px #ff6666, 3px 3px 0 #000; border-color: #990000;}
+        /* Grüne Edition (Speichern/Korrekt) */
+        .btn.save-btn { background-color: var(--poke-green); color: white; box-shadow: inset -3px -3px 0px #006600, inset 3px 3px 0px #66ff66, 3px 3px 0 #000; border-color: #006600;}
+        /* Blaue Edition (Zurück) */
+        .btn.back-btn { background-color: var(--poke-ui-blue); color: white; margin-top: 30px; box-shadow: inset -3px -3px 0px #1a2d45, inset 3px 3px 0px #5b7db5, 3px 3px 0 #000; border-color: #1a2d45;}
 
         /* EINGABEFELDER IM RETRO LOOK */
         input[type="text"], input[type="number"] {
             font-family: 'Press Start 2P', cursive, monospace;
             width: 90%;
-            padding: 10px;
+            padding: 12px;
             margin: 8px 0;
-            border: 4px solid var(--retro-border);
+            border: 3px solid var(--poke-ui-blue);
             background-color: #ffffff;
             color: var(--retro-text);
-            font-size: 12px;
-            border-radius: 0;
-            box-shadow: inset 2px 2px 0px #999;
+            font-size: 10px;
+            border-radius: 4px;
+            box-shadow: inset 3px 3px 0px #ccc;
         }
         
-        /* QUIZ FEEDBACK */
-        .btn.correct-ans { background-color: var(--retro-green) !important; color: white; }
-        .btn.wrong-ans { background-color: var(--retro-red) !important; color: white; }
-        #feedback { font-size: 14px; margin-top: 20px; min-height: 60px; padding: 10px; border: 4px solid black; display: none;}
-        .correct { background-color: var(--retro-green); color: white; }
-        .wrong { background-color: var(--retro-red); color: white; }
+        /* QUIZ SPEZIAL STYLES */
+        /* Die Fragebox sieht aus wie das Kampfdialog-Fenster */
+        .question-box {
+             background-color: var(--poke-white);
+             border: 4px solid var(--poke-ui-blue);
+             border-radius: 8px;
+             padding: 15px;
+             margin-bottom: 25px;
+             text-align: left;
+             box-shadow: inset 0 0 0 2px #000;
+        }
+
+        .btn.correct-ans { background-color: var(--poke-green) !important; color: white; border-color: #004d00;}
+        .btn.wrong-ans { background-color: var(--poke-red) !important; color: white; border-color: #4d0000;}
+        
+        #feedback { 
+            font-size: 12px; 
+            margin-top: 20px; 
+            min-height: 60px; 
+            padding: 15px; 
+            border: 4px solid var(--poke-ui-blue);
+            border-radius: 8px;
+            display: none;
+            text-align: left;
+        }
+        .correct { background-color: var(--poke-green); color: white; }
+        .wrong { background-color: var(--poke-red); color: white; }
         #next-btn { display: none; margin-top: 20px; }
         
-        /* KATZEKASSE STYLES */
+        /* KATZEKASSE STYLES - INVENTAR LOOK */
         .expense-item {
-            background-color: #ffffff;
+            background-color: #e8e8e8; /* Etwas dunkler, wie ein Menüeintrag */
             padding: 10px;
-            border: 2px solid var(--retro-border);
-            margin: 5px 0;
+            border: 3px solid var(--poke-ui-blue);
+            border-radius: 4px;
+            margin: 8px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 10px;
+            text-align: left;
+            box-shadow: 2px 2px 0 #000;
         }
         .del-btn { 
-            background-color: var(--retro-red); 
+            background-color: var(--poke-red); 
             color: white; 
             border: 2px solid black; 
-            padding: 4px 8px; 
+            padding: 6px 8px; 
             cursor: pointer; 
             font-family: inherit;
-            font-size: 10px;
+            font-size: 8px;
+            box-shadow: inset -2px -2px 0 #550000, inset 2px 2px 0 #ff6666;
         }
-        #splitResult { text-align: left; background-color: #fff; padding: 15px; border: 4px solid black; margin-top: 15px; font-size: 10px;}
-        #splitResult ul { padding-left: 10px; list-style-type: square; }
-        #splitResult li { margin-bottom: 10px; }
-        #syncStatus { font-size: 10px; color: #666; margin-bottom: 15px; text-transform: uppercase; }
-        /* ============ 8-BIT DESIGN END ============ */
+        #splitResult { text-align: left; background-color: #fff; padding: 15px; border: 4px solid var(--poke-ui-blue); border-radius: 4px; margin-top: 15px; font-size: 10px; box-shadow: inset 0 0 0 2px #000;}
+        #splitResult ul { padding-left: 15px; list-style-type: square; }
+        #splitResult li { margin-bottom: 12px; }
+        #syncStatus { font-size: 9px; color: #666; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
+        hr { border: none; border-top: 3px dashed var(--poke-ui-blue); }
+        /* ============ POKÉMON STIL ENDE ============ */
     </style>
 </head>
 <body>
 
     <div class="container">
         <div id="menu" class="page active">
-            <h1>👾 JGA 8-BIT CENTER 👾</h1>
-            <p>PRESS START TO DRINK</p>
+            <h1>POKÉMON<br>JGA EDITION</h1>
+            <p>A WILD BACHELOR PARTY APPEARED!</p>
             <br>
+            <p style="font-size: 10px;">CHOOSE YOUR OPTION:</p>
             <button class="btn primary" onclick="showPage('kasse'); loadDataFromCloud();">💰 KATZEKASSE (SYNC)</button>
-            <button class="btn quiz-btn" onclick="showPage('quiz')">🤓 NERD QUIZ Lvl.99</button>
+            <button class="btn quiz-btn" onclick="showPage('quiz')">🤓 TRAINER QUIZ</button>
         </div>
 
         <div id="kasse" class="page">
-            <h2>💰 INSERT COIN</h2>
-            <div id="syncStatus">☁️ CONNECTING TO SERVER...</div>
+            <h2>💰 YOUR BAG (KASSE)</h2>
+            <div id="syncStatus">☁️ CONNECTING TO PC...</div>
             
-            <p>PLAYER COUNT:</p>
+            <p>HOW MANY TRAINERS?</p>
             <input type="number" id="totalPeople" value="5" min="2" onchange="saveDataToCloud()">
             
-            <hr style="border: 2px solid black; margin: 20px 0;">
+            <hr>
             
-            <h3>NEW HIGH SCORE (AUSGABE)</h3>
-            <input type="text" id="expName" placeholder="PLAYER NAME (z.B. Max)">
-            <input type="text" id="expDesc" placeholder="ITEM (z.B. Bier)">
-            <input type="number" id="expAmount" placeholder="CREDITS in €">
-            <button class="btn save-btn" onclick="addExpense()">➕ SAVE GAME</button>
+            <h3>ADD NEW ITEM (AUSGABE)</h3>
+            <input type="text" id="expName" placeholder="TRAINER NAME (z.B. Ash)">
+            <input type="text" id="expDesc" placeholder="ITEM USED (z.B. Bier)">
+            <input type="number" id="expAmount" placeholder="COST (₽/€)">
+            <button class="btn save-btn" onclick="addExpense()">➕ SAVE TO BAG</button>
             
             <div id="expenseList" style="margin-top: 20px;"></div>
             
-            <button class="btn primary" style="margin-top: 20px;" onclick="calculateSplit()">📊 CALC RESULTS</button>
+            <button class="btn primary" style="margin-top: 20px;" onclick="calculateSplit()">📊 CHECK BALANCE</button>
             
             <div id="splitResult"></div>
-            <button class="btn back-btn" onclick="showPage('menu')">⬅️ BACK TO MENU</button>
+            <button class="btn back-btn" onclick="showPage('menu')">⬅️ RUN (BACK)</button>
         </div>
 
         <div id="quiz" class="page">
-            <h2>🤓 TRAINER BATTLE 🤓</h2>
-            <div id="progress" style="color:#666; font-size:10px; margin-bottom:15px;">STAGE 1 / 1</div>
+            <h2>🤓 TRAINER BATTLE! 🤓</h2>
+            <div id="progress" style="color:#666; font-size:10px; margin-bottom:15px;">TURN 1 / 1</div>
             
-            <div style="border: 4px solid black; padding: 10px; margin-bottom: 20px; background: #fff;">
-                 <div id="question" style="font-size: 12px;">LOADING DATA...</div>
+            <div class="question-box">
+                 <div id="question" style="font-size: 12px; line-height: 1.8;">A wild question appeared! Loading data...</div>
             </div>
 
             <div id="answers"></div>
             <div id="feedback"></div>
-            <button id="next-btn" class="btn quiz-btn" onclick="nextQuestion()">NEXT STAGE ➡️</button>
-            <button class="btn back-btn" onclick="showPage('menu')">⬅️ RUN AWAY</button>
+            <button id="next-btn" class="btn quiz-btn" style="background-color: var(--poke-ui-blue);" onclick="nextQuestion()">NEXT TURN ➡️</button>
+            <button class="btn back-btn" onclick="showPage('menu')">⬅️ RUN (BACK)</button>
         </div>
     </div>
 
@@ -196,12 +238,12 @@
 
         function loadDataFromCloud() {
             if (GOOGLE_SHEET_URL === "HIER_DEINE_URL_EINFÜGEN") {
-                document.getElementById('syncStatus').innerText = "⚠️ INSERT URL ERROR!";
+                document.getElementById('syncStatus').innerText = "⚠️ LINK ERROR! CHECK CABLE.";
                 document.getElementById('syncStatus').style.color = "red";
                 return;
             }
 
-            document.getElementById('syncStatus').innerText = "☁️ DOWNLOADING DATA...";
+            document.getElementById('syncStatus').innerText = "☁️ DOWNLOADING FROM PC...";
             
             fetch(GOOGLE_SHEET_URL)
                 .then(response => response.json())
@@ -211,19 +253,19 @@
                         document.getElementById('totalPeople').value = appData.totalPeople;
                     }
                     updateExpenseList();
-                    document.getElementById('syncStatus').innerText = "✅ OK! SERVER CONNECTED.";
-                    document.getElementById('syncStatus').style.color = "green";
+                    document.getElementById('syncStatus').innerText = "✅ CONNECTION ESTABLISHED.";
+                    document.getElementById('syncStatus').style.color = "var(--poke-green)";
                 })
                 .catch(error => {
-                    document.getElementById('syncStatus').innerText = "❌ LOAD ERROR!";
+                    document.getElementById('syncStatus').innerText = "❌ CONNECTION FAILED!";
                     document.getElementById('syncStatus').style.color = "red";
                 });
         }
 
         function saveDataToCloud() {
             appData.totalPeople = parseInt(document.getElementById('totalPeople').value) || 5;
-            document.getElementById('syncStatus').innerText = "⏳ SAVING...";
-            document.getElementById('syncStatus').style.color = "#ffcc00";
+            document.getElementById('syncStatus').innerText = "⏳ SAVING GAME...";
+            document.getElementById('syncStatus').style.color = "var(--poke-yellow)";
 
             const formData = new URLSearchParams();
             formData.append('data', JSON.stringify(appData));
@@ -232,10 +274,10 @@
                 .then(response => response.text())
                 .then(result => {
                     document.getElementById('syncStatus').innerText = "✅ GAME SAVED!";
-                    document.getElementById('syncStatus').style.color = "green";
+                    document.getElementById('syncStatus').style.color = "var(--poke-green)";
                 })
                 .catch(error => {
-                    document.getElementById('syncStatus').innerText = "❌ SAVE ERROR!";
+                    document.getElementById('syncStatus').innerText = "❌ SAVE ERROR. THE SAVE FILE IS CORRUPTED.";
                     document.getElementById('syncStatus').style.color = "red";
                 });
         }
@@ -246,7 +288,7 @@
             let amount = parseFloat(document.getElementById('expAmount').value.replace(',', '.'));
 
             if (!name || isNaN(amount) || amount <= 0) {
-                alert("ERROR: ENTER NAME & CREDITS!");
+                alert("OAK'S WORDS: 'Now is not the time to use that!' (Enter Name & Cost)");
                 return;
             }
 
@@ -264,16 +306,16 @@
         function updateExpenseList() {
             let listDiv = document.getElementById('expenseList');
             if (!appData.expenses || appData.expenses.length === 0) {
-                listDiv.innerHTML = "<small>NO ITEMS YET.</small>";
+                listDiv.innerHTML = "<small>BAG IS EMPTY.</small>";
                 return;
             }
             
-            let html = '<h3>INVENTORY (AUSGABEN):</h3>';
+            let html = '<h3>INVENTORY (ITEMS USED):</h3>';
             appData.expenses.forEach((ex, i) => {
                 html += `
                 <div class="expense-item">
-                    <div><b>${ex.name}</b>: ${ex.amount.toFixed(2)}€ <br><small>${ex.desc}</small></div>
-                    <button class="del-btn" onclick="removeExpense(${i})">DEL</button>
+                    <div><b style='color: var(--poke-ui-blue)'>${ex.name}</b> used <br>${ex.desc} (${ex.amount.toFixed(2)}₽)</div>
+                    <button class="del-btn" onclick="removeExpense(${i})">TOSS</button>
                 </div>`;
             });
             listDiv.innerHTML = html;
@@ -288,7 +330,7 @@
 
         function calculateSplit() {
             if (!appData.expenses || appData.expenses.length === 0) {
-                alert("NO DATA TO CALCULATE!");
+                alert("NO DATA! CAN'T USE 'CALCULATE'.");
                 return;
             }
 
@@ -306,14 +348,14 @@
             let perPersonAvg = total / totalPeople;
             let numPayers = Object.keys(paidPerPerson).length;
             
-            let html = `<h3>💸 RESULTS:</h3><p><b>TOTAL:</b> ${total.toFixed(2)} €</p><p><b>PER PLAYER (${totalPeople}):</b> ${perPersonAvg.toFixed(2)} €</p><hr style="border:2px solid black;"><ul>`;
+            let html = `<h3>💸 BATTLE RESULTS:</h3><p><b>TOTAL:</b> ${total.toFixed(2)} ₽</p><p><b>PER TRAINER (${totalPeople}):</b> ${perPersonAvg.toFixed(2)} ₽</p><hr><ul>`;
 
             for (let person in paidPerPerson) {
                 let balance = paidPerPerson[person] - perPersonAvg;
                 if (balance > 0.01) {
-                    html += `<li><span style='color:green'>${person} GETS: <b>${balance.toFixed(2)} €</b></span></li>`;
+                    html += `<li><span style='color:var(--poke-green)'>${person} GAINS <b>${balance.toFixed(2)} ₽</b>!</span></li>`;
                 } else if (balance < -0.01) {
-                    html += `<li><span style='color:red'>${person} PAYS: <b>${Math.abs(balance).toFixed(2)} €</b></span></li>`;
+                    html += `<li><span style='color:var(--poke-red)'>${person} PAYS <b>${Math.abs(balance).toFixed(2)} ₽</b>!</span></li>`;
                 } else {
                     html += `<li>${person} IS BALANCED.</li>`;
                 }
@@ -321,7 +363,7 @@
 
             let freeloaders = totalPeople - numPayers;
             if (freeloaders > 0) {
-                html += `<br><li><span style='color:red'><b>WARNING:</b> ${freeloaders} IDLE PLAYER(S) MUST PAY <b>${perPersonAvg.toFixed(2)} €</b> EACH!</span></li>`;
+                html += `<br><li><span style='color:var(--poke-red)'><b>WILD WARNING:</b> ${freeloaders} IDLE TRAINER(S) MUST PAY <b>${perPersonAvg.toFixed(2)} ₽</b> EACH!</span></li>`;
             }
 
             html += `</ul>`;
@@ -333,26 +375,39 @@
         // HIER KANNST DU JETZT EIGENE FRAGEN EINTRAGEN:
         const questions = [
             { 
-                question: "Hier kommt deine allererste Frage rein! (z.B. Wie heißt der Bräutigam mit zweitem Vornamen?)", 
-                answers: ["Falsche Antwort 1", "Richtige Antwort", "Falsche Antwort 2", "Falsche Antwort 3"], 
-                correct: 1 // 0 ist die erste Antwort, 1 die zweite, 2 die dritte, 3 die vierte.
+                question: "Der wilde Bräutigam greift an! Was ist seine größte Schwäche? (Hier deine Frage eintragen...)", 
+                answers: ["Attacke 1 (Falsch)", "Attacke 2 (Richtig)", "Attacke 3 (Falsch)", "Attacke 4 (Falsch)"], 
+                correct: 1 // 0=erste, 1=zweite, 2=dritte, 3=vierte Antwort ist richtig.
             }
-            // Kopiere einfach den Block da drüber, wenn du mehr Fragen willst!
+            // Kopiere einfach den Block da drüber und füge ein Komma dazwischen ein, wenn du mehr Fragen willst!
         ];
 
         let currentQuestionIndex = 0;
 
         function showQuestion() {
             const q = questions[currentQuestionIndex];
-            document.getElementById("progress").innerText = `STAGE ${currentQuestionIndex + 1} / ${questions.length}`;
-            document.getElementById("question").innerText = q.question;
+            document.getElementById("progress").innerText = `TURN ${currentQuestionIndex + 1} / ${questions.length}`;
+            // Simuliert das langsame Schreiben des Textes wie im Spiel
+            const questionElement = document.getElementById("question");
+            questionElement.innerText = "";
+            let i = 0;
+            let typingEffect = setInterval(() => {
+                if (i < q.question.length) {
+                    questionElement.innerHTML += q.question.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typingEffect);
+                }
+            }, 30); // Geschwindigkeit des Tippens
+
             document.getElementById("answers").innerHTML = "";
             document.getElementById("feedback").style.display = "none";
             document.getElementById("next-btn").style.display = "none";
 
             q.answers.forEach((answer, index) => {
                 const btn = document.createElement("button");
-                btn.innerText = answer;
+                // Fügt einen kleinen Pfeil vor die Antworten wie im Spiel-Menü
+                btn.innerHTML = "> " + answer;
                 btn.classList.add("btn");
                 btn.onclick = () => checkAnswer(btn, index);
                 document.getElementById("answers").appendChild(btn);
@@ -369,12 +424,12 @@
 
             if (index === q.correct) {
                 clickedBtn.classList.add("correct-ans");
-                feedbackDiv.innerHTML = "✅ IT'S SUPER EFFECTIVE!<br>🍺 CREW DRINKS! 🍺";
+                feedbackDiv.innerHTML = "It's super effective!<br>The crew takes a drink damage!";
                 feedbackDiv.className = "correct";
             } else {
                 clickedBtn.classList.add("wrong-ans");
                 buttons[q.correct].classList.add("correct-ans");
-                feedbackDiv.innerHTML = "❌ IT'S NOT VERY EFFECTIVE...<br>🍺 GROOM DRINKS! 🍺";
+                feedbackDiv.innerHTML = "It's not very effective...<br>The groom is hurt by recoil (drinks)!";
                 feedbackDiv.className = "wrong";
             }
             document.getElementById("next-btn").style.display = "block";
@@ -385,17 +440,18 @@
             if (currentQuestionIndex < questions.length) {
                 showQuestion();
             } else {
-                document.getElementById("progress").innerText = "GAME OVER";
-                document.getElementById("question").innerText = "ALL STAGES CLEARED!";
+                document.getElementById("progress").innerText = "BATTLE ENDED";
+                document.getElementById("question").innerText = "Trainer defeated! You received 0 Pokédollars.";
                 document.getElementById("answers").innerHTML = "";
                 document.getElementById("next-btn").style.display = "none";
                 document.getElementById("feedback").style.display = "block";
-                document.getElementById("feedback").innerHTML = "FINAL SCORE REACHED! <br><br> IS THE GROOM STILL ALIVE? CHEERS! 🍻";
+                document.getElementById("feedback").innerHTML = "THE BATTLE IS OVER! <br><br> CHECK GROOM'S HP BAR. CHEERS! 🍻";
                 document.getElementById("feedback").className = "correct";
             }
         }
 
-        showQuestion();
+        // Kleiner Timeout beim Starten, damit die Schriftart laden kann
+        setTimeout(showQuestion, 500);
     </script>
 </body>
 </html>
