@@ -42,7 +42,6 @@
         .btn:hover { background-color: #444; }
         .btn:active { transform: scale(0.98); }
         .btn-back { background-color: #555; margin-top: 20px; }
-        .btn-upload { background-color: #e3350d; border-color: #e3350d; }
         
         /* EINGABEFELDER */
         input[type="text"], input[type="number"] {
@@ -82,9 +81,6 @@
         .del-btn { background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
         #splitResult { text-align: left; background-color: #1a1a1a; padding: 15px; border-radius: 8px; margin-top: 15px; }
         #splitResult ul { padding-left: 20px; }
-        
-        /* UPLOAD STYLES */
-        #preview { max-width: 100%; margin-top: 15px; border-radius: 8px; display: none; }
     </style>
 </head>
 <body>
@@ -96,7 +92,6 @@
             <p>Willkommen zur legendärsten Tour des Jahres.</p>
             <button class="btn" onclick="showPage('kasse')">💰 Katzekasse (Abrechnung)</button>
             <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
-            <button class="btn" onclick="showPage('upload')">📸 Beweismittel hochladen</button>
         </div>
 
         <div id="kasse" class="page">
@@ -121,22 +116,6 @@
             <button class="btn btn-back" onclick="showPage('menu')">🔙 Zurück zum Menü</button>
         </div>
 
-        <div id="upload" class="page">
-            <h2>📸 Beweismittel sichern</h2>
-            <p>Lade hier die Absturz-Bilder hoch. Was auf dem JGA passiert... landet in der Cloud!</p>
-            
-            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
-            <button class="btn" onclick="document.getElementById('fileInput').click()">📷 Foto auswählen / aufnehmen</button>
-            
-            <img id="preview" src="" alt="Vorschau">
-            
-            <button id="uploadBtn" class="btn btn-upload" style="display: none;" onclick="uploadFile()">🚀 Ab in die Cloud!</button>
-            
-            <div id="status"></div>
-            
-            <button class="btn btn-back" onclick="showPage('menu')">🔙 Zurück zum Menü</button>
-        </div>
-
         <div id="quiz" class="page">
             <h2>🤓 Nerd-Prüfung 🤓</h2>
             <div id="progress" style="color:#aaa; font-size:14px; margin-bottom:10px;">Frage 1 von 30</div>
@@ -151,9 +130,6 @@
     </div>
 
     <script>
-        // HIER DEINE KOPIERTE WEB-APP-URL FÜR DEN FOTO-UPLOAD EINTRAGEN:
-        const GOOGLE_SCRIPT_URL = "DEINE_WEB_APP_URL_HIER";
-
         // ---- NAVIGATION ----
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -255,7 +231,7 @@
                 }
             }
 
-            // Für die Leute, die gar nichts gezahlt haben (Tauchen nicht in der Liste auf)
+            // Für die Leute, die gar nichts gezahlt haben
             let freeloaders = totalPeople - numPayers;
             if (freeloaders > 0) {
                 html += `<br><li class="wrong"><b>ACHTUNG:</b> ${freeloaders} Person(en), die bisher NICHTS gezahlt haben, müssen jeweils noch <b>${perPersonAvg.toFixed(2)} €</b> zahlen!</li>`;
@@ -263,65 +239,6 @@
 
             html += `</ul>`;
             document.getElementById('splitResult').innerHTML = html;
-        }
-
-
-        // ================= LOGIK: UPLOAD =================
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('preview');
-                    img.src = e.target.result;
-                    img.style.display = 'block';
-                    document.getElementById('uploadBtn').style.display = 'block';
-                    document.getElementById('status').innerText = "";
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function uploadFile() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-            if (!file) return;
-
-            if (GOOGLE_SCRIPT_URL === "DEINE_WEB_APP_URL_HIER") {
-                alert("Fehler: Du musst noch deine Google Script URL im Code eintragen!");
-                return;
-            }
-
-            const statusDiv = document.getElementById('status');
-            statusDiv.innerText = "⏳ Lade hoch... Bitte warten...";
-            statusDiv.style.color = "#ffcb05";
-            document.getElementById('uploadBtn').disabled = true;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const base64Data = e.target.result.split(',')[1];
-                const formData = new URLSearchParams();
-                formData.append('fileName', file.name);
-                formData.append('mimeType', file.type);
-                formData.append('fileData', base64Data);
-
-                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData })
-                .then(response => response.text())
-                .then(result => {
-                    statusDiv.innerText = "✅ Erfolgreich in der Cloud gesichert!";
-                    statusDiv.style.color = "#4CAF50";
-                    document.getElementById('uploadBtn').disabled = false;
-                    document.getElementById('fileInput').value = ""; 
-                    document.getElementById('preview').style.display = 'none';
-                    document.getElementById('uploadBtn').style.display = 'none';
-                })
-                .catch(error => {
-                    statusDiv.innerText = "❌ Fehler beim Hochladen!";
-                    statusDiv.style.color = "#f44336";
-                    document.getElementById('uploadBtn').disabled = false;
-                });
-            };
-            reader.readAsDataURL(file);
         }
 
         // ================= LOGIK: POKÉMON QUIZ =================
@@ -355,7 +272,65 @@
             { question: "Wie entwickelt man in der Gelben Edition sein Starter-Pikachu zu Raichu?", answers: ["Donnerstein", "Freundschaft auf max", "Level 100", "Gar nicht (außer durch Tausch)"], correct: 3 },
             { question: "Welche Auswirkung beschreibt den berühmt-berüchtigten '1/256-Glitch' in Pokémon Rot/Blau?", answers: ["Meisterbälle können failen", "100%-Attacken können verfehlen", "Das Spiel crasht beim Speichern", "Pokémon klonen sich im PC"], correct: 1 },
             { question: "Welches Pokémon kann die Attacke 'Plaudagei' erlernen, mit der man auf dem DS früher eigene Audios per Mikro aufnehmen konnte?", answers: ["Porygon", "Plaudagei", "Krakeelo", "W Pummeluff"], correct: 1 },
-            { question: "Welche Attacke war in der 1. Generation (Rot/Blau) die EINZIGE des Typs Drache, die existierte?", answers: ["Drachenwut", "Wutanfall", "Drachenklaue", "Windhose"], correct: 0
+            { question: "Welche Attacke war in der 1. Generation (Rot/Blau) die EINZIGE des Typs Drache, die existierte?", answers: ["Drachenwut", "Wutanfall", "Drachenklaue", "Windhose"], correct: 0 }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function showQuestion() {
+            const q = questions[currentQuestionIndex];
+            document.getElementById("progress").innerText = `Frage ${currentQuestionIndex + 1} von ${questions.length}`;
+            document.getElementById("question").innerText = q.question;
+            document.getElementById("answers").innerHTML = "";
+            document.getElementById("feedback").innerText = "";
+            document.getElementById("next-btn").style.display = "none";
+
+            q.answers.forEach((answer, index) => {
+                const btn = document.createElement("button");
+                btn.innerText = answer;
+                btn.classList.add("btn");
+                btn.onclick = () => checkAnswer(btn, index);
+                document.getElementById("answers").appendChild(btn);
+            });
+        }
+
+        function checkAnswer(clickedBtn, index) {
+            const q = questions[currentQuestionIndex];
+            const feedbackDiv = document.getElementById("feedback");
+            const buttons = document.querySelectorAll("#answers .btn");
+            
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (index === q.correct) {
+                clickedBtn.classList.add("correct-ans");
+                feedbackDiv.innerHTML = "✅ Verdammt, er wusste es!<br>🍺 DIE CREW TRINKT! 🍺";
+                feedbackDiv.className = "correct";
+            } else {
+                clickedBtn.classList.add("wrong-ans");
+                buttons[q.correct].classList.add("correct-ans");
+                feedbackDiv.innerHTML = "❌ FALSCH!<br>🍺 DER BRÄUTIGAM TRINKT! 🍺";
+                feedbackDiv.className = "wrong";
+            }
+            
+            document.getElementById("next-btn").style.display = "block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                document.getElementById("progress").innerText = "Quiz beendet!";
+                document.getElementById("question").innerText = "Alle 30 Fragen geschafft!";
+                document.getElementById("answers").innerHTML = "";
+                document.getElementById("next-btn").style.display = "none";
+                document.getElementById("feedback").innerHTML = "Endstand erreicht! <br><br> Lebt der Bräutigam noch? Prost! 🍻";
+                document.getElementById("feedback").className = "correct";
+            }
+        }
+
+        // Starte das Quiz im Hintergrund, damit es bereit ist
+        showQuestion();
     </script>
 </body>
 </html>
