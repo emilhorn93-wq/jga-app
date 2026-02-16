@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JGA Command Center</title>
+    <style>
+        /* ALLGEMEINES DESIGN */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background-color: #2c2c2c;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 450px;
+            margin: 0 auto;
+            position: relative;
+        }
+        h1, h2, h3 { color: #ffcb05; text-shadow: 1px 1px #3c5aa6; }
+        
+        /* BUTTONS */
+        .btn {
+            background-color: #333;
+            color: white;
+            border: 2px solid #555;
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        .btn:hover { background-color: #444; }
+        .btn:active { transform: scale(0.98); }
+        .btn-back { background-color: #555; margin-top: 20px; }
+        .btn-upload { background-color: #e3350d; border-color: #e3350d; }
+        
+        /* EINGABEFELDER */
+        input[type="text"], input[type="number"] {
+            width: 90%;
+            padding: 12px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background-color: #1a1a1a;
+            color: white;
+            font-size: 16px;
+        }
+        
+        /* MENÜ STEUERUNG */
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* QUIZ STYLES */
+        .btn.correct-ans { background-color: #4CAF50; border-color: #4CAF50; color: white; }
+        .btn.wrong-ans { background-color: #f44336; border-color: #f44336; color: white; }
+        #feedback { font-size: 1.2em; font-weight: bold; margin-top: 20px; min-height: 50px; }
+        .correct { color: #4CAF50; }
+        .wrong { color: #f44336; }
+        #next-btn { background-color: #3c5aa6; border: none; display: none; margin-top: 20px; }
+        
+        /* KATZEKASSE STYLES */
+        .expense-item {
+            background-color: #1a1a1a;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 5px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #ffcb05;
+        }
+        .del-btn { background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        #splitResult { text-align: left; background-color: #1a1a1a; padding: 15px; border-radius: 8px; margin-top: 15px; }
+        #splitResult ul { padding-left: 20px; }
+        
+        /* UPLOAD STYLES */
+        #preview { max-width: 100%; margin-top: 15px; border-radius: 8px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="menu" class="page active">
+            <h1>🍺 JGA Command Center 🍺</h1>
+            <p>Willkommen zur legendärsten Tour des Jahres.</p>
+            <button class="btn" onclick="showPage('kasse')">💰 Katzekasse (Abrechnung)</button>
+            <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
+            <button class="btn" onclick="showPage('upload')">📸 Beweismittel hochladen</button>
+        </div>
+
+        <div id="kasse" class="page">
+            <h2>💰 Katzekasse</h2>
+            <p>Wie viele Leute sind insgesamt auf dem JGA?</p>
+            <input type="number" id="totalPeople" value="5" min="2">
+            
+            <hr style="border-color: #555; margin: 20px 0;">
+            
+            <h3>Neue Ausgabe</h3>
+            <input type="text" id="expName" placeholder="Wer hat bezahlt? (z.B. Max)">
+            <input type="text" id="expDesc" placeholder="Wofür? (z.B. Kasten Bier)">
+            <input type="number" id="expAmount" placeholder="Betrag in € (z.B. 25.50)">
+            <button class="btn" style="background-color: #4CAF50; border-color: #4CAF50;" onclick="addExpense()">➕ Eintragen</button>
+            
+            <div id="expenseList" style="margin-top: 20px;"></div>
+            
+            <button class="btn" style="background-color: #3c5aa6; border-color: #3c5aa6; margin-top: 20px;" onclick="calculateSplit()">📊 Abrechnung berechnen</button>
+            
+            <div id="splitResult"></div>
+
+            <button class="btn btn-back" onclick="showPage('menu')">🔙 Zurück zum Menü</button>
+        </div>
+
+        <div id="upload" class="page">
+            <h2>📸 Beweismittel sichern</h2>
+            <p>Lade hier die Absturz-Bilder hoch. Was auf dem JGA passiert... landet in der Cloud!</p>
+            
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
+            <button class="btn" onclick="document.getElementById('fileInput').click()">📷 Foto auswählen / aufnehmen</button>
+            
+            <img id="preview" src="" alt="Vorschau">
+            
+            <button id="uploadBtn" class="btn btn-upload" style="display: none;" onclick="uploadFile()">🚀 Ab in die Cloud!</button>
+            
+            <div id="status"></div>
+            
+            <button class="btn btn-back" onclick="showPage('menu')">🔙 Zurück zum Menü</button>
+        </div>
+
+        <div id="quiz" class="page">
+            <h2>🤓 Nerd-Prüfung 🤓</h2>
+            <div id="progress" style="color:#aaa; font-size:14px; margin-bottom:10px;">Frage 1 von 30</div>
+            <div id="question" style="font-size: 18px; margin-bottom: 20px; font-weight: bold;">Lade Frage...</div>
+            <div id="answers"></div>
+            <div id="feedback"></div>
+            <button id="next-btn" class="btn" onclick="nextQuestion()">Nächste Frage ➡️</button>
+            
+            <button class="btn btn-back" onclick="showPage('menu')">🔙 Zurück zum Menü</button>
+        </div>
+
+    </div>
+
+    <script>
+        // HIER DEINE KOPIERTE WEB-APP-URL FÜR DEN FOTO-UPLOAD EINTRAGEN:
+        const GOOGLE_SCRIPT_URL = "DEINE_WEB_APP_URL_HIER";
+
+        // ---- NAVIGATION ----
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // ================= LOGIK: KATZEKASSE =================
+        let expenses = [];
+
+        function addExpense() {
+            let name = document.getElementById('expName').value.trim();
+            let desc = document.getElementById('expDesc').value.trim();
+            let amount = parseFloat(document.getElementById('expAmount').value.replace(',', '.'));
+
+            if (!name || isNaN(amount) || amount <= 0) {
+                alert("Bitte einen Namen und einen gültigen Betrag eingeben!");
+                return;
+            }
+
+            expenses.push({ name: name, desc: desc, amount: amount });
+            
+            // Felder leeren
+            document.getElementById('expDesc').value = '';
+            document.getElementById('expAmount').value = '';
+            
+            updateExpenseList();
+            document.getElementById('splitResult').innerHTML = ''; // Resultat löschen, da sich Werte geändert haben
+        }
+
+        function updateExpenseList() {
+            let listDiv = document.getElementById('expenseList');
+            if (expenses.length === 0) {
+                listDiv.innerHTML = "";
+                return;
+            }
+            
+            let html = '<h3>Bisherige Ausgaben:</h3>';
+            expenses.forEach((ex, i) => {
+                html += `
+                <div class="expense-item">
+                    <div><b>${ex.name}</b>: ${ex.amount.toFixed(2)}€ <br><small>${ex.desc}</small></div>
+                    <button class="del-btn" onclick="removeExpense(${i})">X</button>
+                </div>`;
+            });
+            listDiv.innerHTML = html;
+        }
+
+        function removeExpense(index) {
+            expenses.splice(index, 1);
+            updateExpenseList();
+            document.getElementById('splitResult').innerHTML = '';
+        }
+
+        function calculateSplit() {
+            if (expenses.length === 0) {
+                alert("Es gibt noch keine Ausgaben!");
+                return;
+            }
+
+            let totalPeople = parseInt(document.getElementById('totalPeople').value);
+            if (isNaN(totalPeople) || totalPeople < 1) {
+                alert("Bitte eine gültige Personenanzahl oben eintragen!");
+                return;
+            }
+
+            let total = 0;
+            let paidPerPerson = {};
+
+            // Zusammenrechnen wer wie viel gezahlt hat
+            expenses.forEach(ex => {
+                total += ex.amount;
+                // Namen vereinheitlichen (z.B. "max" und "Max" zusammenfassen)
+                let nameKey = ex.name.charAt(0).toUpperCase() + ex.name.slice(1).toLowerCase();
+                
+                if (!paidPerPerson[nameKey]) paidPerPerson[nameKey] = 0;
+                paidPerPerson[nameKey] += ex.amount;
+            });
+
+            let perPersonAvg = total / totalPeople;
+            let numPayers = Object.keys(paidPerPerson).length;
+            
+            let html = `
+                <h3>💸 Das Ergebnis:</h3>
+                <p><b>Gesamtkosten:</b> ${total.toFixed(2)} €</p>
+                <p><b>Pro Kopf (${totalPeople} Pers.):</b> ${perPersonAvg.toFixed(2)} €</p>
+                <hr style="border-color:#555;">
+                <ul>
+            `;
+
+            // Wer bekommt was / wer schuldet was
+            for (let person in paidPerPerson) {
+                let balance = paidPerPerson[person] - perPersonAvg;
+                if (balance > 0.01) {
+                    html += `<li class="correct">${person} bekommt noch <b>${balance.toFixed(2)} €</b></li>`;
+                } else if (balance < -0.01) {
+                    html += `<li class="wrong">${person} muss noch <b>${Math.abs(balance).toFixed(2)} €</b> in die Kasse zahlen</li>`;
+                } else {
+                    html += `<li>${person} ist genau bei ±0.</li>`;
+                }
+            }
+
+            // Für die Leute, die gar nichts gezahlt haben (Tauchen nicht in der Liste auf)
+            let freeloaders = totalPeople - numPayers;
+            if (freeloaders > 0) {
+                html += `<br><li class="wrong"><b>ACHTUNG:</b> ${freeloaders} Person(en), die bisher NICHTS gezahlt haben, müssen jeweils noch <b>${perPersonAvg.toFixed(2)} €</b> zahlen!</li>`;
+            }
+
+            html += `</ul>`;
+            document.getElementById('splitResult').innerHTML = html;
+        }
+
+
+        // ================= LOGIK: UPLOAD =================
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('preview');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    document.getElementById('uploadBtn').style.display = 'block';
+                    document.getElementById('status').innerText = "";
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            if (GOOGLE_SCRIPT_URL === "DEINE_WEB_APP_URL_HIER") {
+                alert("Fehler: Du musst noch deine Google Script URL im Code eintragen!");
+                return;
+            }
+
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerText = "⏳ Lade hoch... Bitte warten...";
+            statusDiv.style.color = "#ffcb05";
+            document.getElementById('uploadBtn').disabled = true;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result.split(',')[1];
+                const formData = new URLSearchParams();
+                formData.append('fileName', file.name);
+                formData.append('mimeType', file.type);
+                formData.append('fileData', base64Data);
+
+                fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData })
+                .then(response => response.text())
+                .then(result => {
+                    statusDiv.innerText = "✅ Erfolgreich in der Cloud gesichert!";
+                    statusDiv.style.color = "#4CAF50";
+                    document.getElementById('uploadBtn').disabled = false;
+                    document.getElementById('fileInput').value = ""; 
+                    document.getElementById('preview').style.display = 'none';
+                    document.getElementById('uploadBtn').style.display = 'none';
+                })
+                .catch(error => {
+                    statusDiv.innerText = "❌ Fehler beim Hochladen!";
+                    statusDiv.style.color = "#f44336";
+                    document.getElementById('uploadBtn').disabled = false;
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ================= LOGIK: POKÉMON QUIZ =================
+        const questions = [
+            { question: "Welches nicht-legendäre Pokémon (ohne Mega-Entwicklung) hat die allerhöchste Basiswert-Summe?", answers: ["Dragoran", "Letarking", "Metagross", "Knakrack"], correct: 1 },
+            { question: "Aufgrund eines Programmierfehlers in Rot/Blau: Welcher Typ war fälschlicherweise komplett immun gegen Geist-Attacken?", answers: ["Normal", "Kampf", "Psycho", "Gift"], correct: 2 },
+            { question: "Wie viele verschiedene Flecken-Muster gibt es ungefähr von dem Pokémon Pandir im Code des Spiels?", answers: ["Genau 256", "Ca. 8.192", "Ca. 1 Million", "Über 4 Milliarden"], correct: 3 },
+            { question: "Welches dieser Standard-Pokémon hat dieselbe extrem niedrige Fangrate (3) wie Mewtu?", answers: ["Relaxo", "Tanhel", "Lapras", "Ditto"], correct: 1 },
+            { question: "Welches getragene Item verdoppelt sowohl den physischen als auch den Spezial-Angriff von Pikachu?", answers: ["Flinkklaue", "Kugelblitz", "Meistergurt", "Zauberwasser"], correct: 1 },
+            { question: "Welches Pokémon ändert beim Entwickeln in den Generationen 3 bis 5 mit 33% Wahrscheinlichkeit sein Geschlecht?", answers: ["Azurill", "Barschwa", "Trasla", "Kirlia"], correct: 0 },
+            { question: "Welches Pokémon wurde historisch gesehen von den Entwicklern als allererstes entworfen?", answers: ["Bisasam", "Pikachu", "Mew", "Rizeros"], correct: 3 },
+            { question: "Welches Pokémon hat als einziges immer exakt 1 KP?", answers: ["Karpador", "Dummisel", "Ninjatom", "Zubat"], correct: 2 },
+            { question: "Welches Pokémon aus Gen 5 wird von einer Trainerin bereits in Pokémon Rot/Blau am Felstunnel beschrieben (Rosa mit Blumenmuster)?", answers: ["Somniam", "Ohrdoch", "Picochilla", "Monozyto"], correct: 0 },
+            { question: "In Rot/Blau bewirkt die Attacke 'Energiefokus' aufgrund eines Bugs nicht das Erhöhen, sondern das Senken von...", answers: ["der Initiative", "der Ausweichrate", "der Volltreffer-Quote", "dem Spezial-Angriff"], correct: 2 },
+            { question: "Welches Pokémon aus Gen 1 konnte in den ersten Spielen seine eigene Namensgeber-Attacke gar nicht erlernen?", answers: ["Smogon (Smog)", "Schlurp (Schlecker)", "Kicklee (Turmkick)", "Bisasam (Egelsamen)"], correct: 1 },
+            { question: "Welches Item braucht man seit Generation 5 zwingend, um Barschwa zu Milotic zu entwickeln?", answers: ["Ewigstein", "Prachtschuppe", "Wasserstein", "Schönschuppe"], correct: 3 },
+            { question: "Welches Pokémon ziert das Cover der originalen japanischen 'Grünen Edition'?", answers: ["Bisaflor", "Sichlor", "Raupy", "Bisasam"], correct: 0 },
+            { question: "Welche Typenkombination hatte bis zur Einführung des Feen-Typs (Gen 6) absolut keine Schwäche?", answers: ["Stahl / Käfer", "Geist / Unlicht", "Drache / Feuer", "Boden / Wasser"], correct: 1 },
+            { question: "Wie lautet der interne 'Geheim'-Typ, den das berühmte Glitch-Pokémon MissingNo in Rot/Blau besitzt?", answers: ["Bird / Vogel", "Glitch", "Null", "Mew"], correct: 0 },
+            { question: "Welches Pokémon besitzt laut Pokédex eine Musterung auf dem Bauch, die je nach Region unterschiedlich ist?", answers: ["Pandir", "Quaputzi", "Farbbeagle", "Arbok"], correct: 3 },
+            { question: "Was bestimmt in der 2. Generation (Gold/Silber), ob ein angetroffenes Pokémon ein Shiny ist?", answers: ["Der Wochentag", "Das Level", "Die DVs (IVs)", "Die Trainer-ID"], correct: 2 },
+            { question: "Welches der folgenden weiblichen Pokémon ist unfruchtbar und kann in der Pension KEINE Eier legen?", answers: ["Nidoqueen", "Nidoran♀", "Kangama", "Chaneira"], correct: 0 },
+            { question: "Welches Pokémon wiegt laut Pokédex exakt 999,9 kg und teilt sich damit Platz 1 der schwersten Pokémon mit Kaguron?", answers: ["Mewtu", "Relaxo", "Cosmovum", "Groudon"], correct: 2 },
+            { question: "Wie hieß Evoli (Eevee) ursprünglich in der Beta-Version der englischen Übersetzung?", answers: ["Eon", "Evie", "Vee", "Mutant"], correct: 0 },
+            { question: "Laut Pokédex ist der blaue Körper nur eine Attrappe. Das wahre Wesen ist der schwarze Schwanz. Welches Pokémon ist gemeint?", answers: ["Schiggy", "Aquana", "Woingenau", "Morlord"], correct: 2 },
+            { question: "Warum schlägt die Attacke 'Platscher' zwingend fehl, wenn das Feld 'Gravitation' aktiv ist?", answers: ["Weil Wasser zu schwer wird", "Weil Platscher im Japanischen 'Hüpfer' heißt", "Weil es ein Glitch ist", "Weil Gravitation Normal-Attacken blockiert"], correct: 1 },
+            { question: "Wie hoch war das absolute, limitierende EV-Maximum für einen einzelnen Statuswert in den Generationen 3 bis 5?", answers: ["100", "252", "255", "999"], correct: 3 },
+            { question: "Welches ist das einzige Pokémon, das sich nur entwickelt, wenn man es gegen ein GANZ BESTIMMTES anderes Pokémon (Cavalanzas) tauscht?", answers: ["Flegmon", "Schnuthelm", "Georok", "Sichlor"], correct: 1 },
+            { question: "Wie heißt das Wetter-Phänomen, das am 12. Januar (Geburtstag von Junichi Masuda) als Easter Egg auftritt?", answers: ["Diamantstaub", "Sternenschauer", "Blutregen", "Aurora-Borealis"], correct: 0 },
+            { question: "Welches Pokémon besitzt die allerhöchste Basis-Initiative (200) aller bisherigen Spiele?", answers: ["Ninjask", "Deoxys (Speed)", "Regieleki", "Lektrobal"], correct: 2 },
+            { question: "Wie entwickelt man in der Gelben Edition sein Starter-Pikachu zu Raichu?", answers: ["Donnerstein", "Freundschaft auf max", "Level 100", "Gar nicht (außer durch Tausch)"], correct: 3 },
+            { question: "Welche Auswirkung beschreibt den berühmt-berüchtigten '1/256-Glitch' in Pokémon Rot/Blau?", answers: ["Meisterbälle können failen", "100%-Attacken können verfehlen", "Das Spiel crasht beim Speichern", "Pokémon klonen sich im PC"], correct: 1 },
+            { question: "Welches Pokémon kann die Attacke 'Plaudagei' erlernen, mit der man auf dem DS früher eigene Audios per Mikro aufnehmen konnte?", answers: ["Porygon", "Plaudagei", "Krakeelo", "W Pummeluff"], correct: 1 },
+            { question: "Welche Attacke war in der 1. Generation (Rot/Blau) die EINZIGE des Typs Drache, die existierte?", answers: ["Drachenwut", "Wutanfall", "Drachenklaue", "Windhose"], correct: 0
