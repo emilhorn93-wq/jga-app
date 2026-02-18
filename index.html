@@ -3,228 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POKÉMON JGA EDITION</title>
+    <title>JGA COMMAND CENTER</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* ============ POKÉMON 8-BIT STIL START ============ */
         :root {
-            --poke-bg-blue: #243d5c;    /* Dunkelblaues Gameboy Menü */
-            --poke-ui-blue: #305082;    /* Rahmenfarbe der Dialogboxen */
-            --poke-white: #f8f8f8;      /* Hintergrund Textboxen */
-            --poke-text: #222222;       /* Fast schwarzer Text */
-            --poke-yellow: #f8d030;     /* Pikachu Gelb (Titel) */
-            --poke-red: #ff0000;        /* Rote Edition */
-            --poke-green: #48c048;      /* Grüne Edition / Korrekt */
-            --poke-shadow: 4px 4px 0px #000; /* Harter Pixelschatten */
+            --bg-color: #000000;
+            --text-color: #ffffff;
+            --border-color: #ffffff;
+            --button-hover: #333333;
         }
 
         body {
-            font-family: 'Press Start 2P', cursive, monospace; 
-            background-color: var(--poke-bg-blue);
-            /* Ein kleines Raster-Muster im Hintergrund für mehr Retro-Feeling */
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-            background-size: 4px 4px;
-            color: var(--poke-text);
-            text-align: center;
-            padding: 20px;
+            background-color: #1a1a1a; /* Dunkler Hintergrund hinter den Fischen */
+            color: var(--text-color);
+            font-family: 'Press Start 2P', cursive;
             margin: 0;
-            image-rendering: pixelated; 
-            font-size: 12px; 
-            line-height: 1.6;
-        }
-        
-        h1 { 
-            /* Der typische Pokémon-Titel-Look: Gelb mit dickem blauen Rand */
-            color: var(--poke-yellow); 
-            text-shadow: 3px 3px 0 #243d5c, -3px -3px 0 #243d5c, 3px -3px 0 #243d5c, -3px 3px 0 #243d5c, 5px 5px 0 #000;
-            font-size: 22px;
-            margin-bottom: 35px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        h2, h3 {
-            color: var(--poke-text);
-            font-size: 14px;
-            margin-top: 25px;
-            text-transform: uppercase;
-        }
-
-        /* Der Haupt-Container sieht aus wie eine große Dialogbox */
-        .container {
-            background-color: var(--poke-white);
-            border: 4px solid var(--poke-ui-blue); 
-            /* Doppelter Rahmen-Effekt wie im Spiel */
-            box-shadow: 0 0 0 4px #000, inset 0 0 0 2px #000; 
-            padding: 25px;
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-            border-radius: 4px; 
-        }
-        
-        /* RETRO BUTTONS IM POKEMON STIL */
-        .btn {
-            font-family: 'Press Start 2P', cursive, monospace;
-            background-color: var(--poke-white); 
-            color: var(--poke-text);
-            border: 3px solid var(--poke-ui-blue);
-            padding: 15px 10px;
-            margin: 12px 0;
+            padding: 20px;
+            text-align: center;
             font-size: 12px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.1s;
+            line-height: 1.6;
+            
+            /* === KARPADOR HINTERGRUND === */
+            /* Das Bild ist direkt im Code eingebettet, damit es sofort funktioniert */
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAllBMVEUAAAAAAAD///+ZAACZAAAAmQAAZAABmQAAZgAAmQABmQAAmQAAZgAAmQAAZgABmQAAZgAAmQAAZgABmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAmQAAZgAAZgAAmQAAZgAAZgAAmQAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgD+vR+RAAAANnRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2ZuaNngAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAFTSURBVDjLpVXZFoIgEBS11tZ279b2/3/yVkBQUJO+cT44DDOzMIQ/j5gZ+46FqR0D076P+r4/j3i+4v15xuv1g9frG+9/v7j9/uD2+8Lz94Hn7wP/94H/84H384H34wPvxwfujw/c7x+43z9wfwS4PwLcHwHu9wD3e4D7LcD9FuB+C3C/BbjfAtxvAe63APdb4L8u8F8X+K8L/NcF/usC/3WB/7rAf13gvy7wXxf4rwu81wXe6wLvZYH3ssB7WeC9LPBeFngvC7yXBc7LAudlgfOy4H9Z4LwscF4WOC8LnJcFzssC52WB87LAeVngvCxwXhY4LwucHwXOjwLnR4HzosB5UeC8KHBeFDgvCpwXBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOiwHlR4LwocF4UOC8KnBcFzosC50WB86LAeVHgvChwXhQ4LwqcHwXOjwLnR4HzosB5UeC8KHBe/gEihI5pynfR/AAAAABJRU5ErkJggg==');
+            background-size: 64px; /* Größe der Fische */
+            background-repeat: repeat; /* Muster wiederholen */
+            image-rendering: pixelated; /* WICHTIG: Macht die Fische scharf und pixelig */
+        }
+
+        h1 {
+            font-size: 18px;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            /* Pixeliger 3D Effekt */
-            box-shadow: inset -3px -3px 0px #aaa, inset 3px 3px 0px #fff, 3px 3px 0 #000; 
-            border-radius: 4px;
-        }
-        .btn:hover { background-color: #e0e0e0; }
-        .btn:active { 
-            transform: translate(3px, 3px); 
-            box-shadow: inset -2px -2px 0px #aaa, inset 2px 2px 0px #fff;
+            letter-spacing: 1px;
+            line-height: 1.5;
         }
         
-        /* Spezielle Button Farben (Editionen-Style) */
-        /* Gelbe Edition (Kasse) */
-        .btn.primary { background-color: var(--poke-yellow); color: black; box-shadow: inset -3px -3px 0px #c7a500, inset 3px 3px 0px #ffff66, 3px 3px 0 #000; }
-        /* Rote Edition (Quiz) */
-        .btn.quiz-btn { background-color: var(--poke-red); color: white; box-shadow: inset -3px -3px 0px #990000, inset 3px 3px 0px #ff6666, 3px 3px 0 #000; border-color: #990000;}
-        /* Grüne Edition (Speichern/Korrekt) */
-        .btn.save-btn { background-color: var(--poke-green); color: white; box-shadow: inset -3px -3px 0px #006600, inset 3px 3px 0px #66ff66, 3px 3px 0 #000; border-color: #006600;}
-        /* Blaue Edition (Zurück) */
-        .btn.back-btn { background-color: var(--poke-ui-blue); color: white; margin-top: 30px; box-shadow: inset -3px -3px 0px #1a2d45, inset 3px 3px 0px #5b7db5, 3px 3px 0 #000; border-color: #1a2d45;}
+        p { font-size: 10px; margin-bottom: 25px; color: #ccc; }
 
-        /* EINGABEFELDER IM RETRO LOOK */
-        input[type="text"], input[type="number"] {
-            font-family: 'Press Start 2P', cursive, monospace;
-            width: 90%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 3px solid var(--poke-ui-blue);
-            background-color: #ffffff;
-            color: var(--retro-text);
+        /* === DER POKÉMON RAHMEN === */
+        .frame-container {
+            position: relative;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 30px 20px;
+            /* WICHTIG: Hintergrund schwarz machen, damit man den Text über den Fischen lesen kann */
+            background-color: #000000; 
+            border: 4px double var(--border-color);
+            z-index: 10;
+        }
+
+        /* Die 4 Pokeball-Ecken */
+        .corner {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #000000; /* Muss schwarz sein, um den Rahmen zu verdecken */
+            z-index: 20;
+        }
+        .corner-tl { top: -8px; left: -8px; }
+        .corner-tr { top: -8px; right: -8px; }
+        .corner-bl { bottom: -8px; left: -8px; }
+        .corner-br { bottom: -8px; right: -8px; }
+
+        /* Pixel Art Pokéball */
+        .pokeball-icon {
+            width: 2px; height: 2px;
+            background: transparent;
+            box-shadow: 
+                4px 0 #fff, 6px 0 #fff, 8px 0 #fff, 10px 0 #fff,
+                2px 2px #fff, 12px 2px #fff,
+                0 4px #fff, 4px 4px #fff, 6px 4px #fff, 8px 4px #fff, 10px 4px #fff, 14px 4px #fff,
+                0 6px #fff, 2px 6px #fff, 4px 6px #000, 6px 6px #000, 8px 6px #000, 10px 6px #000, 12px 6px #fff, 14px 6px #fff,
+                0 8px #fff, 4px 8px #fff, 6px 8px #fff, 8px 8px #fff, 10px 8px #fff, 14px 8px #fff,
+                2px 10px #fff, 12px 10px #fff,
+                4px 12px #fff, 6px 12px #fff, 8px 12px #fff, 10px 12px #fff;
+            position: relative;
+            top: 1px; left: 1px;
+        }
+        .pokeball-icon::after {
+            content: ''; position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            top: 5px; left: 5px;
+            border: 2px solid #000;
+        }
+
+        /* === BUTTONS IM RETRO LOOK === */
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: #222;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 15px 10px;
+            margin: 15px 0;
+            font-family: 'Press Start 2P', cursive;
             font-size: 10px;
-            border-radius: 4px;
-            box-shadow: inset 3px 3px 0px #ccc;
-        }
-        
-        /* QUIZ SPEZIAL STYLES */
-        /* Die Fragebox sieht aus wie das Kampfdialog-Fenster */
-        .question-box {
-             background-color: var(--poke-white);
-             border: 4px solid var(--poke-ui-blue);
-             border-radius: 8px;
-             padding: 15px;
-             margin-bottom: 25px;
-             text-align: left;
-             box-shadow: inset 0 0 0 2px #000;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 0 2px #000, 0 0 0 4px #fff; 
+            margin-bottom: 25px;
+            transition: transform 0.1s;
         }
 
-        .btn.correct-ans { background-color: var(--poke-green) !important; color: white; border-color: #004d00;}
-        .btn.wrong-ans { background-color: var(--poke-red) !important; color: white; border-color: #4d0000;}
-        
-        #feedback { 
-            font-size: 12px; 
-            margin-top: 20px; 
-            min-height: 60px; 
-            padding: 15px; 
-            border: 4px solid var(--poke-ui-blue);
-            border-radius: 8px;
-            display: none;
-            text-align: left;
+        .btn:hover { background-color: var(--button-hover); }
+        .btn:active { transform: translateY(2px); }
+
+        /* Eingabefelder */
+        input {
+            width: 90%;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 12px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            margin-bottom: 10px;
+            outline: none;
         }
-        .correct { background-color: var(--poke-green); color: white; }
-        .wrong { background-color: var(--poke-red); color: white; }
-        #next-btn { display: none; margin-top: 20px; }
-        
-        /* KATZEKASSE STYLES - INVENTAR LOOK */
+
+        /* Listen & Ergebnisse */
         .expense-item {
-            background-color: #e8e8e8; /* Etwas dunkler, wie ein Menüeintrag */
+            border: 1px solid #555;
             padding: 10px;
-            border: 3px solid var(--poke-ui-blue);
-            border-radius: 4px;
-            margin: 8px 0;
+            margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 10px;
+            font-size: 9px;
+        }
+        .del-btn {
+            background: #fff; color: #000;
+            border: none; padding: 4px 6px;
+            cursor: pointer; font-family: inherit;
+        }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        #syncStatus { color: #777; font-size: 8px; margin-bottom: 15px; }
+
+        .question-box {
+            border: 2px solid #fff;
+            padding: 15px;
+            margin-bottom: 20px;
             text-align: left;
-            box-shadow: 2px 2px 0 #000;
         }
-        .del-btn { 
-            background-color: var(--poke-red); 
-            color: white; 
-            border: 2px solid black; 
-            padding: 6px 8px; 
-            cursor: pointer; 
-            font-family: inherit;
-            font-size: 8px;
-            box-shadow: inset -2px -2px 0 #550000, inset 2px 2px 0 #ff6666;
-        }
-        #splitResult { text-align: left; background-color: #fff; padding: 15px; border: 4px solid var(--poke-ui-blue); border-radius: 4px; margin-top: 15px; font-size: 10px; box-shadow: inset 0 0 0 2px #000;}
-        #splitResult ul { padding-left: 15px; list-style-type: square; }
-        #splitResult li { margin-bottom: 12px; }
-        #syncStatus { font-size: 9px; color: #666; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
-        hr { border: none; border-top: 3px dashed var(--poke-ui-blue); }
-        /* ============ POKÉMON STIL ENDE ============ */
+        #feedback { display: none; margin-top: 15px; padding: 10px; border: 1px dashed #fff; }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="frame-container">
+        <div class="corner corner-tl"><div class="pokeball-icon"></div></div>
+        <div class="corner corner-tr"><div class="pokeball-icon"></div></div>
+        <div class="corner corner-bl"><div class="pokeball-icon"></div></div>
+        <div class="corner corner-br"><div class="pokeball-icon"></div></div>
+
         <div id="menu" class="page active">
-            <h1>POKÉMON<br>JGA EDITION</h1>
-            <p>A WILD BACHELOR PARTY APPEARED!</p>
+            <h1>JGA<br>COMMAND CENTER</h1>
+            <p>Willkommen zur legendärsten Tour des Jahres.</p>
             <br>
-            <p style="font-size: 10px;">CHOOSE YOUR OPTION:</p>
-            <button class="btn primary" onclick="showPage('kasse'); loadDataFromCloud();">💰 KATZEKASSE (SYNC)</button>
-            <button class="btn quiz-btn" onclick="showPage('quiz')">🤓 TRAINER QUIZ</button>
+            <button class="btn" onclick="showPage('kasse'); loadDataFromCloud();">💰 KATZEKASSE</button>
+            <button class="btn" onclick="showPage('quiz')">🤓 HARDCORE QUIZ</button>
+            <button class="btn" style="opacity: 0.5; cursor: default;">📷 GALERIE (BALD)</button>
         </div>
 
         <div id="kasse" class="page">
-            <h2>💰 YOUR BAG (KASSE)</h2>
-            <div id="syncStatus">☁️ CONNECTING TO PC...</div>
+            <h2>💰 KATZEKASSE</h2>
+            <div id="syncStatus">VERBINDE MIT SERVER...</div>
             
-            <p>HOW MANY TRAINERS?</p>
+            <p>ANZAHL SPIELER:</p>
             <input type="number" id="totalPeople" value="5" min="2" onchange="saveDataToCloud()">
             
-            <hr>
+            <hr style="border: 1px dashed #fff; margin: 20px 0;">
             
-            <h3>ADD NEW ITEM (AUSGABE)</h3>
-            <input type="text" id="expName" placeholder="TRAINER NAME (z.B. Ash)">
-            <input type="text" id="expDesc" placeholder="ITEM USED (z.B. Bier)">
-            <input type="number" id="expAmount" placeholder="COST (₽/€)">
-            <button class="btn save-btn" onclick="addExpense()">➕ SAVE TO BAG</button>
+            <p>NEUE AUSGABE:</p>
+            <input type="text" id="expName" placeholder="WER? (z.B. Max)">
+            <input type="text" id="expDesc" placeholder="WAS? (z.B. Bier)">
+            <input type="number" id="expAmount" placeholder="WIE VIEL? (€)">
+            <button class="btn" onclick="addExpense()">➕ EINTRAGEN</button>
             
-            <div id="expenseList" style="margin-top: 20px;"></div>
+            <div id="expenseList" style="margin-top: 20px; text-align: left;"></div>
             
-            <button class="btn primary" style="margin-top: 20px;" onclick="calculateSplit()">📊 CHECK BALANCE</button>
+            <button class="btn" onclick="calculateSplit()">📊 ABRECHNUNG</button>
+            <div id="splitResult" style="text-align: left; margin-top: 20px; font-size: 9px;"></div>
             
-            <div id="splitResult"></div>
-            <button class="btn back-btn" onclick="showPage('menu')">⬅️ RUN (BACK)</button>
+            <button class="btn" style="margin-top: 30px;" onclick="showPage('menu')">⬅️ ZURÜCK</button>
         </div>
 
         <div id="quiz" class="page">
-            <h2>🤓 TRAINER BATTLE! 🤓</h2>
-            <div id="progress" style="color:#666; font-size:10px; margin-bottom:15px;">TURN 1 / 1</div>
+            <h2>🤓 TRAINER BATTLE</h2>
+            <div id="progress" style="color:#777; margin-bottom: 10px;">FRAGE 1 / 1</div>
             
             <div class="question-box">
-                 <div id="question" style="font-size: 12px; line-height: 1.8;">A wild question appeared! Loading data...</div>
+                <div id="question">Lade Daten...</div>
             </div>
 
             <div id="answers"></div>
             <div id="feedback"></div>
-            <button id="next-btn" class="btn quiz-btn" style="background-color: var(--poke-ui-blue);" onclick="nextQuestion()">NEXT TURN ➡️</button>
-            <button class="btn back-btn" onclick="showPage('menu')">⬅️ RUN (BACK)</button>
+            
+            <button id="next-btn" class="btn" style="display:none;" onclick="nextQuestion()">NÄCHSTE RUNDE ➡️</button>
+            <button class="btn" style="margin-top: 30px;" onclick="showPage('menu')">⬅️ FLUCHT (MENÜ)</button>
         </div>
+
     </div>
 
     <script>
         // ==========================================
-        // ⚠️ DEINE GOOGLE TABELLEN URL HIER EINFÜGEN:
+        // ⚠️ DEINE GOOGLE URL HIER EINFÜGEN:
         const GOOGLE_SHEET_URL = "HIER_DEINE_URL_EINFÜGEN";
         // ==========================================
 
@@ -233,53 +222,35 @@
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- CLOUD DATENBANK LOGIK ---
+        // --- CLOUD DATENBANK ---
         let appData = { totalPeople: 5, expenses: [] };
 
         function loadDataFromCloud() {
-            if (GOOGLE_SHEET_URL === "HIER_DEINE_URL_EINFÜGEN") {
-                document.getElementById('syncStatus').innerText = "⚠️ LINK ERROR! CHECK CABLE.";
+            if (GOOGLE_SHEET_URL.includes("HIER_DEINE_URL")) {
+                document.getElementById('syncStatus').innerText = "⚠️ FEHLER: URL FEHLT IM CODE!";
                 document.getElementById('syncStatus').style.color = "red";
                 return;
             }
-
-            document.getElementById('syncStatus').innerText = "☁️ DOWNLOADING FROM PC...";
-            
             fetch(GOOGLE_SHEET_URL)
                 .then(response => response.json())
                 .then(data => {
-                    if (data && data.expenses) {
-                        appData = data;
-                        document.getElementById('totalPeople').value = appData.totalPeople;
-                    }
+                    if (data && data.expenses) appData = data;
+                    if (data.totalPeople) document.getElementById('totalPeople').value = data.totalPeople;
                     updateExpenseList();
-                    document.getElementById('syncStatus').innerText = "✅ CONNECTION ESTABLISHED.";
-                    document.getElementById('syncStatus').style.color = "var(--poke-green)";
+                    document.getElementById('syncStatus').innerText = "✅ ONLINE VERBUNDEN";
                 })
-                .catch(error => {
-                    document.getElementById('syncStatus').innerText = "❌ CONNECTION FAILED!";
-                    document.getElementById('syncStatus').style.color = "red";
-                });
+                .catch(e => document.getElementById('syncStatus').innerText = "❌ LADEFEHLER (OFFLINE?)");
         }
 
         function saveDataToCloud() {
             appData.totalPeople = parseInt(document.getElementById('totalPeople').value) || 5;
-            document.getElementById('syncStatus').innerText = "⏳ SAVING GAME...";
-            document.getElementById('syncStatus').style.color = "var(--poke-yellow)";
-
+            document.getElementById('syncStatus').innerText = "⏳ SPEICHERE...";
+            
             const formData = new URLSearchParams();
             formData.append('data', JSON.stringify(appData));
-
             fetch(GOOGLE_SHEET_URL, { method: 'POST', body: formData })
-                .then(response => response.text())
-                .then(result => {
-                    document.getElementById('syncStatus').innerText = "✅ GAME SAVED!";
-                    document.getElementById('syncStatus').style.color = "var(--poke-green)";
-                })
-                .catch(error => {
-                    document.getElementById('syncStatus').innerText = "❌ SAVE ERROR. THE SAVE FILE IS CORRUPTED.";
-                    document.getElementById('syncStatus').style.color = "red";
-                });
+                .then(() => document.getElementById('syncStatus').innerText = "✅ GESPEICHERT")
+                .catch(() => document.getElementById('syncStatus').innerText = "❌ SPEICHERFEHLER");
         }
 
         function addExpense() {
@@ -287,171 +258,99 @@
             let desc = document.getElementById('expDesc').value.trim();
             let amount = parseFloat(document.getElementById('expAmount').value.replace(',', '.'));
 
-            if (!name || isNaN(amount) || amount <= 0) {
-                alert("OAK'S WORDS: 'Now is not the time to use that!' (Enter Name & Cost)");
-                return;
-            }
+            if (!name || isNaN(amount) || amount <= 0) { alert("Bitte Name & Betrag eingeben!"); return; }
 
-            appData.expenses.push({ name: name, desc: desc, amount: amount });
-            
+            appData.expenses.push({ name, desc, amount });
             document.getElementById('expDesc').value = '';
             document.getElementById('expAmount').value = '';
-            
             updateExpenseList();
-            document.getElementById('splitResult').innerHTML = ''; 
-            
             saveDataToCloud();
         }
 
         function updateExpenseList() {
             let listDiv = document.getElementById('expenseList');
-            if (!appData.expenses || appData.expenses.length === 0) {
-                listDiv.innerHTML = "<small>BAG IS EMPTY.</small>";
-                return;
-            }
-            
-            let html = '<h3>INVENTORY (ITEMS USED):</h3>';
+            if (!appData.expenses.length) { listDiv.innerHTML = "<small>Noch keine Ausgaben.</small>"; return; }
+            let html = '<p>BISHERIGE ITEMS:</p>';
             appData.expenses.forEach((ex, i) => {
-                html += `
-                <div class="expense-item">
-                    <div><b style='color: var(--poke-ui-blue)'>${ex.name}</b> used <br>${ex.desc} (${ex.amount.toFixed(2)}₽)</div>
-                    <button class="del-btn" onclick="removeExpense(${i})">TOSS</button>
-                </div>`;
+                html += `<div class="expense-item"><div><b>${ex.name}</b>: ${ex.desc} (${ex.amount.toFixed(2)}€)</div><button class="del-btn" onclick="removeExpense(${i})">X</button></div>`;
             });
             listDiv.innerHTML = html;
         }
 
-        function removeExpense(index) {
-            appData.expenses.splice(index, 1);
+        function removeExpense(i) {
+            appData.expenses.splice(i, 1);
             updateExpenseList();
-            document.getElementById('splitResult').innerHTML = '';
             saveDataToCloud();
         }
 
         function calculateSplit() {
-            if (!appData.expenses || appData.expenses.length === 0) {
-                alert("NO DATA! CAN'T USE 'CALCULATE'.");
-                return;
-            }
-
-            let totalPeople = parseInt(document.getElementById('totalPeople').value);
-            let total = 0;
-            let paidPerPerson = {};
-
+            if (!appData.expenses.length) return;
+            let total = 0, paidPerPerson = {}, totalPeople = parseInt(document.getElementById('totalPeople').value);
+            
             appData.expenses.forEach(ex => {
                 total += ex.amount;
-                let nameKey = ex.name.charAt(0).toUpperCase() + ex.name.slice(1).toLowerCase();
-                if (!paidPerPerson[nameKey]) paidPerPerson[nameKey] = 0;
-                paidPerPerson[nameKey] += ex.amount;
+                let key = ex.name.toUpperCase();
+                paidPerPerson[key] = (paidPerPerson[key] || 0) + ex.amount;
             });
 
-            let perPersonAvg = total / totalPeople;
-            let numPayers = Object.keys(paidPerPerson).length;
+            let avg = total / totalPeople;
+            let html = `<p>GESAMT: ${total.toFixed(2)}€ (PRO KOPF: ${avg.toFixed(2)}€)</p><ul>`;
             
-            let html = `<h3>💸 BATTLE RESULTS:</h3><p><b>TOTAL:</b> ${total.toFixed(2)} ₽</p><p><b>PER TRAINER (${totalPeople}):</b> ${perPersonAvg.toFixed(2)} ₽</p><hr><ul>`;
-
             for (let person in paidPerPerson) {
-                let balance = paidPerPerson[person] - perPersonAvg;
-                if (balance > 0.01) {
-                    html += `<li><span style='color:var(--poke-green)'>${person} GAINS <b>${balance.toFixed(2)} ₽</b>!</span></li>`;
-                } else if (balance < -0.01) {
-                    html += `<li><span style='color:var(--poke-red)'>${person} PAYS <b>${Math.abs(balance).toFixed(2)} ₽</b>!</span></li>`;
-                } else {
-                    html += `<li>${person} IS BALANCED.</li>`;
-                }
+                let diff = paidPerPerson[person] - avg;
+                html += `<li>${person}: ${diff > 0 ? "Bekommt " + diff.toFixed(2) + "€" : "Zahlt " + Math.abs(diff).toFixed(2) + "€"}</li>`;
             }
-
-            let freeloaders = totalPeople - numPayers;
-            if (freeloaders > 0) {
-                html += `<br><li><span style='color:var(--poke-red)'><b>WILD WARNING:</b> ${freeloaders} IDLE TRAINER(S) MUST PAY <b>${perPersonAvg.toFixed(2)} ₽</b> EACH!</span></li>`;
-            }
-
-            html += `</ul>`;
-            document.getElementById('splitResult').innerHTML = html;
+            document.getElementById('splitResult').innerHTML = html + "</ul>";
         }
 
-        // --- DEINE EIGENEN FRAGEN LOGIK ---
-        
-        // HIER KANNST DU JETZT EIGENE FRAGEN EINTRAGEN:
+        // --- QUIZ (EIGENE FRAGEN) ---
         const questions = [
             { 
-                question: "Der wilde Bräutigam greift an! Was ist seine größte Schwäche? (Hier deine Frage eintragen...)", 
-                answers: ["Attacke 1 (Falsch)", "Attacke 2 (Richtig)", "Attacke 3 (Falsch)", "Attacke 4 (Falsch)"], 
-                correct: 1 // 0=erste, 1=zweite, 2=dritte, 3=vierte Antwort ist richtig.
+                question: "Hier kommt deine erste Frage rein?", 
+                answers: ["Falsch", "Richtig", "Falsch", "Falsch"], 
+                correct: 1 
             }
-            // Kopiere einfach den Block da drüber und füge ein Komma dazwischen ein, wenn du mehr Fragen willst!
         ];
 
-        let currentQuestionIndex = 0;
-
+        let currentQ = 0;
         function showQuestion() {
-            const q = questions[currentQuestionIndex];
-            document.getElementById("progress").innerText = `TURN ${currentQuestionIndex + 1} / ${questions.length}`;
-            // Simuliert das langsame Schreiben des Textes wie im Spiel
-            const questionElement = document.getElementById("question");
-            questionElement.innerText = "";
-            let i = 0;
-            let typingEffect = setInterval(() => {
-                if (i < q.question.length) {
-                    questionElement.innerHTML += q.question.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(typingEffect);
-                }
-            }, 30); // Geschwindigkeit des Tippens
-
-            document.getElementById("answers").innerHTML = "";
-            document.getElementById("feedback").style.display = "none";
-            document.getElementById("next-btn").style.display = "none";
-
-            q.answers.forEach((answer, index) => {
-                const btn = document.createElement("button");
-                // Fügt einen kleinen Pfeil vor die Antworten wie im Spiel-Menü
-                btn.innerHTML = "> " + answer;
-                btn.classList.add("btn");
-                btn.onclick = () => checkAnswer(btn, index);
-                document.getElementById("answers").appendChild(btn);
+            if(currentQ >= questions.length) {
+                document.getElementById('question').innerText = "ALLE FRAGEN GESCHAFFT!";
+                document.getElementById('answers').innerHTML = "";
+                return;
+            }
+            let q = questions[currentQ];
+            document.getElementById('progress').innerText = `FRAGE ${currentQ+1} / ${questions.length}`;
+            document.getElementById('question').innerText = q.question;
+            let ansHtml = "";
+            q.answers.forEach((a, i) => {
+                ansHtml += `<button class="btn" onclick="check(${i})">${a}</button>`;
             });
+            document.getElementById('answers').innerHTML = ansHtml;
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('feedback').style.display = 'none';
         }
 
-        function checkAnswer(clickedBtn, index) {
-            const q = questions[currentQuestionIndex];
-            const feedbackDiv = document.getElementById("feedback");
-            feedbackDiv.style.display = "block";
-            const buttons = document.querySelectorAll("#answers .btn");
-            
-            buttons.forEach(btn => btn.disabled = true);
-
-            if (index === q.correct) {
-                clickedBtn.classList.add("correct-ans");
-                feedbackDiv.innerHTML = "It's super effective!<br>The crew takes a drink damage!";
-                feedbackDiv.className = "correct";
+        function check(i) {
+            let q = questions[currentQ];
+            let fb = document.getElementById('feedback');
+            fb.style.display = 'block';
+            if(i === q.correct) {
+                fb.innerText = "✅ RICHTIG! Die Crew trinkt!";
+                fb.style.borderColor = "#0f0";
             } else {
-                clickedBtn.classList.add("wrong-ans");
-                buttons[q.correct].classList.add("correct-ans");
-                feedbackDiv.innerHTML = "It's not very effective...<br>The groom is hurt by recoil (drinks)!";
-                feedbackDiv.className = "wrong";
+                fb.innerText = "❌ FALSCH! Der Bräutigam trinkt!";
+                fb.style.borderColor = "#f00";
             }
-            document.getElementById("next-btn").style.display = "block";
+            document.getElementById('next-btn').style.display = 'block';
         }
 
         function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                showQuestion();
-            } else {
-                document.getElementById("progress").innerText = "BATTLE ENDED";
-                document.getElementById("question").innerText = "Trainer defeated! You received 0 Pokédollars.";
-                document.getElementById("answers").innerHTML = "";
-                document.getElementById("next-btn").style.display = "none";
-                document.getElementById("feedback").style.display = "block";
-                document.getElementById("feedback").innerHTML = "THE BATTLE IS OVER! <br><br> CHECK GROOM'S HP BAR. CHEERS! 🍻";
-                document.getElementById("feedback").className = "correct";
-            }
+            currentQ++;
+            showQuestion();
         }
-
-        // Kleiner Timeout beim Starten, damit die Schriftart laden kann
-        setTimeout(showQuestion, 500);
+        
+        showQuestion();
     </script>
 </body>
 </html>
