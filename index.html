@@ -7,19 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #2a3439; /* Dunkles Blaugrau aus dem Screenshot */
-            --box-bg: #222222;   /* Dunkelgrau für die Box */
+            --bg-color: #2a3439; 
+            --box-bg: #222222;   
             --text-color: #ffffff;
         }
 
         /* === HINTERGRUND & ALLGEMEINES === */
         body {
-            /* Das Karpador Base64-Bild als Kachel-Muster */
             background-color: var(--bg-color);
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAllBMVEUAAAAAAAD///+ZAACZAAAAmQAAZAABmQAAZgAAmQABmQAAmQAAZgAAmQAAZgABmQAAZgAAmQAAZgABmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAmQAAZgAAZgAAmQAAZgAAZgAAmQAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgD+vR+RAAAANnRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2ZuaNngAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAFTSURBVDjLpVXZFoIgEBS11tZ279b2/3/yVkBQUJO+cT44DDOzMIQ/j5gZ+46FqR0D076P+r4/j3i+4v15xuv1g9frG+9/v7j9/uD2+8Lz94Hn7wP/94H/84H384H34wPvxwfujw/c7x+43z9wfwS4PwLcHwHu9wD3e4D7LcD9FuB+C3C/BbjfAtxvAe63APdb4L8u8F8X+K8L/NcF/usC/3WB/7rAf13gvy7wXxf4rwu81wXe6wLvZYH3ssB7WeC9LPBeFngvC7yXBc7LAudlgfOy4H9Z4LwscF4WOC8LnJcFzssC52WB87LAeVngvCxwXhY4LwucHwXOjwLnR4HzosB5UeC8KHBeFDgvCpwXBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOiwHlR4LwocF4UOC8KnBcFzosC50WB86LAeVHgvChwXhQ4LwqcHwXOjwLnR4HzosB5UeC8KHBe/gEihI5pynfR/AAAAABJRU5ErkJggg==');
-            background-size: 50px; 
+            /* HIER IST DER NEUE LINK ZUM KARPADOR: */
+            background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/129.png');
+            background-size: 60px; /* Größe der Karpador-Kacheln */
             background-repeat: repeat; 
-            image-rendering: pixelated; 
+            image-rendering: pixelated; /* Macht ihn schön kantig/retro */
             
             color: var(--text-color);
             font-family: 'Press Start 2P', cursive;
@@ -31,7 +31,7 @@
         }
 
         h1 {
-            color: #ffcb05; /* Pokémon-Gelb */
+            color: #ffcb05; 
             font-size: 16px;
             margin-bottom: 15px;
             margin-top: 10px;
@@ -42,24 +42,23 @@
 
         /* === DER GROßE KARPADOR OBEN DRAUF === */
         .big-karpador {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto -30px auto; /* Zieht ihn über die Box nach unten */
+            width: 120px;
+            height: 120px;
+            margin: 0 auto -35px auto; 
             position: relative;
             z-index: 20;
             image-rendering: pixelated;
-            filter: drop-shadow(4px 4px 0px #000); /* Harter 8-Bit Schatten */
+            filter: drop-shadow(4px 4px 0px #000); 
         }
 
-        /* === DER POKÉMON RAHMEN (EXAKT WIE IM SCREENSHOT) === */
+        /* === DER POKÉMON RAHMEN === */
         .frame-container {
             position: relative;
             max-width: 450px;
             margin: 0 auto 30px auto;
-            padding: 30px 20px 20px 20px;
+            padding: 40px 20px 20px 20px;
             background-color: var(--box-bg); 
             
-            /* Der Rahmen: Schwarz (außen), Weiß, Schwarz (innen) */
             border: 4px solid #ffffff;
             outline: 4px solid #000000;
             box-shadow: inset 0 0 0 4px #000000;
@@ -87,10 +86,8 @@
             border-radius: 50%;
             position: relative;
             box-sizing: border-box;
-            /* Ein kleiner weißer Rand außenrum, damit er sich abhebt */
             box-shadow: 0 0 0 2px #fff; 
         }
-        /* Schwarzer Strich in der Mitte */
         .pokeball-icon::before {
             content: '';
             position: absolute;
@@ -99,7 +96,6 @@
             background: #000;
             transform: translateY(-50%);
         }
-        /* Weißer Button in der Mitte */
         .pokeball-icon::after {
             content: '';
             position: absolute;
@@ -185,7 +181,7 @@
 </head>
 <body>
 
-    <img class="big-karpador" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAllBMVEUAAAAAAAD///+ZAACZAAAAmQAAZAABmQAAZgAAmQABmQAAmQAAZgAAmQAAZgABmQAAZgAAmQAAZgABmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAmQAAZgAAZgAAmQAAZgAAZgAAmQAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgD+vR+RAAAANnRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2ZuaNngAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAFTSURBVDjLpVXZFoIgEBS11tZ279b2/3/yVkBQUJO+cT44DDOzMIQ/j5gZ+46FqR0D076P+r4/j3i+4v15xuv1g9frG+9/v7j9/uD2+8Lz94Hn7wP/94H/84H384H34wPvxwfujw/c7x+43z9wfwS4PwLcHwHu9wD3e4D7LcD9FuB+C3C/BbjfAtxvAe63APdb4L8u8F8X+K8L/NcF/usC/3WB/7rAf13gvy7wXxf4rwu81wXe6wLvZYH3ssB7WeC9LPBeFngvC7yXBc7LAudlgfOy4H9Z4LwscF4WOC8LnJcFzssC52WB87LAeVngvCxwXhY4LwucHwXOjwLnR4HzosB5UeC8KHBeFDgvCpwXBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOiwHlR4LwocF4UOC8KnBcFzosC50WB86LAeVHgvChwXhQ4LwqcHwXOjwLnR4HzosB5UeC8KHBe/gEihI5pynfR/AAAAABJRU5ErkJggg==" alt="Karpador">
+    <img class="big-karpador" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/129.png" alt="Karpador">
 
     <div class="frame-container">
         <div class="corner corner-tl"><div class="pokeball-icon"></div></div>
@@ -378,7 +374,7 @@
             let fb = document.getElementById('feedback');
             fb.style.display = 'block';
             let buttons = document.querySelectorAll('#answers .btn');
-            buttons.forEach(b => b.disabled = true); // Deaktiviert Buttons nach Klick
+            buttons.forEach(b => b.disabled = true);
 
             if(i === q.correct) {
                 fb.innerHTML = "✅ RICHTIG!<br>Die Crew trinkt!";
