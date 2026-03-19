@@ -7,154 +7,185 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
+            --bg-color: #2a3439; /* Dunkles Blaugrau aus dem Screenshot */
+            --box-bg: #222222;   /* Dunkelgrau für die Box */
             --text-color: #ffffff;
-            --border-color: #ffffff;
-            --button-hover: #333333;
         }
 
+        /* === HINTERGRUND & ALLGEMEINES === */
         body {
-            background-color: #1a1a1a; /* Dunkler Hintergrund hinter den Fischen */
+            /* Das Karpador Base64-Bild als Kachel-Muster */
+            background-color: var(--bg-color);
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAllBMVEUAAAAAAAD///+ZAACZAAAAmQAAZAABmQAAZgAAmQABmQAAmQAAZgAAmQAAZgABmQAAZgAAmQAAZgABmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAmQAAZgAAZgAAmQAAZgAAZgAAmQAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgD+vR+RAAAANnRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2ZuaNngAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAFTSURBVDjLpVXZFoIgEBS11tZ279b2/3/yVkBQUJO+cT44DDOzMIQ/j5gZ+46FqR0D076P+r4/j3i+4v15xuv1g9frG+9/v7j9/uD2+8Lz94Hn7wP/94H/84H384H34wPvxwfujw/c7x+43z9wfwS4PwLcHwHu9wD3e4D7LcD9FuB+C3C/BbjfAtxvAe63APdb4L8u8F8X+K8L/NcF/usC/3WB/7rAf13gvy7wXxf4rwu81wXe6wLvZYH3ssB7WeC9LPBeFngvC7yXBc7LAudlgfOy4H9Z4LwscF4WOC8LnJcFzssC52WB87LAeVngvCxwXhY4LwucHwXOjwLnR4HzosB5UeC8KHBeFDgvCpwXBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOiwHlR4LwocF4UOC8KnBcFzosC50WB86LAeVHgvChwXhQ4LwqcHwXOjwLnR4HzosB5UeC8KHBe/gEihI5pynfR/AAAAABJRU5ErkJggg==');
+            background-size: 50px; 
+            background-repeat: repeat; 
+            image-rendering: pixelated; 
+            
             color: var(--text-color);
             font-family: 'Press Start 2P', cursive;
             margin: 0;
             padding: 20px;
             text-align: center;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 1.6;
-            
-            /* === KARPADOR HINTERGRUND === */
-            /* Das Bild ist direkt im Code eingebettet, damit es sofort funktioniert */
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAllBMVEUAAAAAAAD///+ZAACZAAAAmQAAZAABmQAAZgAAmQABmQAAmQAAZgAAmQAAZgABmQAAZgAAmQAAZgABmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAmQAAZgAAZgAAmQAAZgAAZgAAmQAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgD+vR+RAAAANnRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2ZuaNngAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAFTSURBVDjLpVXZFoIgEBS11tZ279b2/3/yVkBQUJO+cT44DDOzMIQ/j5gZ+46FqR0D076P+r4/j3i+4v15xuv1g9frG+9/v7j9/uD2+8Lz94Hn7wP/94H/84H384H34wPvxwfujw/c7x+43z9wfwS4PwLcHwHu9wD3e4D7LcD9FuB+C3C/BbjfAtxvAe63APdb4L8u8F8X+K8L/NcF/usC/3WB/7rAf13gvy7wXxf4rwu81wXe6wLvZYH3ssB7WeC9LPBeFngvC7yXBc7LAudlgfOy4H9Z4LwscF4WOC8LnJcFzssC52WB87LAeVngvCxwXhY4LwucHwXOjwLnR4HzosB5UeC8KHBeFDgvCpwXBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOiwHlR4LwocF4UOC8KnBcFzosC50WB86LAeVHgvChwXhQ4LwqcHwXOjwLnR4HzosB5UeC8KHBe/gEihI5pynfR/AAAAABJRU5ErkJggg==');
-            background-size: 64px; /* Größe der Fische */
-            background-repeat: repeat; /* Muster wiederholen */
-            image-rendering: pixelated; /* WICHTIG: Macht die Fische scharf und pixelig */
         }
 
         h1 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.5;
+            color: #ffcb05; /* Pokémon-Gelb */
+            font-size: 16px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            text-shadow: 2px 2px 0px #000;
         }
         
-        p { font-size: 10px; margin-bottom: 25px; color: #ccc; }
+        p { font-size: 9px; margin-bottom: 25px; color: #eee; }
 
-        /* === DER POKÉMON RAHMEN === */
+        /* === DER GROßE KARPADOR OBEN DRAUF === */
+        .big-karpador {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto -30px auto; /* Zieht ihn über die Box nach unten */
+            position: relative;
+            z-index: 20;
+            image-rendering: pixelated;
+            filter: drop-shadow(4px 4px 0px #000); /* Harter 8-Bit Schatten */
+        }
+
+        /* === DER POKÉMON RAHMEN (EXAKT WIE IM SCREENSHOT) === */
         .frame-container {
             position: relative;
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 30px 20px;
-            /* WICHTIG: Hintergrund schwarz machen, damit man den Text über den Fischen lesen kann */
-            background-color: #000000; 
-            border: 4px double var(--border-color);
+            max-width: 450px;
+            margin: 0 auto 30px auto;
+            padding: 30px 20px 20px 20px;
+            background-color: var(--box-bg); 
+            
+            /* Der Rahmen: Schwarz (außen), Weiß, Schwarz (innen) */
+            border: 4px solid #ffffff;
+            outline: 4px solid #000000;
+            box-shadow: inset 0 0 0 4px #000000;
+            
             z-index: 10;
         }
 
-        /* Die 4 Pokeball-Ecken */
+        /* === DIE POKÉBÄLLE AN DEN ECKEN === */
         .corner {
             position: absolute;
-            width: 16px;
-            height: 16px;
-            background-color: #000000; /* Muss schwarz sein, um den Rahmen zu verdecken */
-            z-index: 20;
+            width: 24px;
+            height: 24px;
+            z-index: 30;
         }
-        .corner-tl { top: -8px; left: -8px; }
-        .corner-tr { top: -8px; right: -8px; }
-        .corner-bl { bottom: -8px; left: -8px; }
-        .corner-br { bottom: -8px; right: -8px; }
+        .corner-tl { top: -14px; left: -14px; }
+        .corner-tr { top: -14px; right: -14px; }
+        .corner-bl { bottom: -14px; left: -14px; }
+        .corner-br { bottom: -14px; right: -14px; }
 
-        /* Pixel Art Pokéball */
         .pokeball-icon {
-            width: 2px; height: 2px;
-            background: transparent;
-            box-shadow: 
-                4px 0 #fff, 6px 0 #fff, 8px 0 #fff, 10px 0 #fff,
-                2px 2px #fff, 12px 2px #fff,
-                0 4px #fff, 4px 4px #fff, 6px 4px #fff, 8px 4px #fff, 10px 4px #fff, 14px 4px #fff,
-                0 6px #fff, 2px 6px #fff, 4px 6px #000, 6px 6px #000, 8px 6px #000, 10px 6px #000, 12px 6px #fff, 14px 6px #fff,
-                0 8px #fff, 4px 8px #fff, 6px 8px #fff, 8px 8px #fff, 10px 8px #fff, 14px 8px #fff,
-                2px 10px #fff, 12px 10px #fff,
-                4px 12px #fff, 6px 12px #fff, 8px 12px #fff, 10px 12px #fff;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff0000 50%, #ffffff 50%);
+            border: 3px solid #000;
+            border-radius: 50%;
             position: relative;
-            top: 1px; left: 1px;
+            box-sizing: border-box;
+            /* Ein kleiner weißer Rand außenrum, damit er sich abhebt */
+            box-shadow: 0 0 0 2px #fff; 
         }
+        /* Schwarzer Strich in der Mitte */
+        .pokeball-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 0;
+            width: 100%; height: 3px;
+            background: #000;
+            transform: translateY(-50%);
+        }
+        /* Weißer Button in der Mitte */
         .pokeball-icon::after {
-            content: ''; position: absolute;
-            width: 4px; height: 4px;
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 6px; height: 6px;
             background: #fff;
-            top: 5px; left: 5px;
             border: 2px solid #000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        /* === BUTTONS IM RETRO LOOK === */
+        /* === BUTTONS === */
         .btn {
             display: block;
             width: 100%;
-            background-color: #222;
-            color: #fff;
-            border: 2px solid #fff;
-            padding: 15px 10px;
-            margin: 15px 0;
+            background-color: #333333;
+            color: #ffffff;
+            border: 2px solid #555555;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 12px 0;
             font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
-            text-transform: uppercase;
+            font-size: 9px;
             cursor: pointer;
-            box-shadow: 0 0 0 2px #000, 0 0 0 4px #fff; 
-            margin-bottom: 25px;
-            transition: transform 0.1s;
+            transition: all 0.2s;
         }
 
-        .btn:hover { background-color: var(--button-hover); }
-        .btn:active { transform: translateY(2px); }
+        .btn:hover { background-color: #444444; border-color: #777777; }
+        .btn:active { transform: scale(0.98); }
 
         /* Eingabefelder */
         input {
             width: 90%;
-            background: #000;
+            background: #111;
             color: #fff;
-            border: 2px solid #fff;
+            border: 2px solid #555;
+            border-radius: 4px;
             padding: 12px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 10px;
+            font-size: 9px;
             margin-bottom: 10px;
             outline: none;
         }
 
         /* Listen & Ergebnisse */
         .expense-item {
-            border: 1px solid #555;
+            border: 2px solid #555;
+            background: #1a1a1a;
             padding: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 9px;
+            font-size: 8px;
+            border-radius: 4px;
+            text-align: left;
         }
         .del-btn {
-            background: #fff; color: #000;
-            border: none; padding: 4px 6px;
-            cursor: pointer; font-family: inherit;
+            background: #ff4444; color: #fff;
+            border: 2px solid #000; padding: 5px 8px;
+            cursor: pointer; font-family: inherit; border-radius: 4px;
         }
         
         .page { display: none; }
         .page.active { display: block; }
         
-        #syncStatus { color: #777; font-size: 8px; margin-bottom: 15px; }
+        #syncStatus { color: #888; font-size: 7px; margin-bottom: 15px; }
+        #splitResult { text-align: left; margin-top: 15px; font-size: 8px; line-height: 1.8; }
+        hr { border: none; border-top: 2px solid #555; margin: 20px 0; }
 
         .question-box {
-            border: 2px solid #fff;
+            border: 2px solid #555;
+            background: #111;
             padding: 15px;
+            border-radius: 6px;
             margin-bottom: 20px;
             text-align: left;
+            line-height: 1.5;
         }
-        #feedback { display: none; margin-top: 15px; padding: 10px; border: 1px dashed #fff; }
+        #feedback { display: none; margin-top: 15px; padding: 10px; border: 2px solid #fff; border-radius: 6px; }
 
     </style>
 </head>
 <body>
+
+    <img class="big-karpador" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAllBMVEUAAAAAAAD///+ZAACZAAAAmQAAZAABmQAAZgAAmQABmQAAmQAAZgAAmQAAZgABmQAAZgAAmQAAZgABmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAZgAAmQAAZgAAmQAAZgAAZgAAmQAAmQAAZgAAZgAAmQAAZgAAZgAAmQAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgAAZgD+vR+RAAAANnRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2ZuaNngAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxMAAAsTAQCanBgAAAFTSURBVDjLpVXZFoIgEBS11tZ279b2/3/yVkBQUJO+cT44DDOzMIQ/j5gZ+46FqR0D076P+r4/j3i+4v15xuv1g9frG+9/v7j9/uD2+8Lz94Hn7wP/94H/84H384H34wPvxwfujw/c7x+43z9wfwS4PwLcHwHu9wD3e4D7LcD9FuB+C3C/BbjfAtxvAe63APdb4L8u8F8X+K8L/NcF/usC/3WB/7rAf13gvy7wXxf4rwu81wXe6wLvZYH3ssB7WeC9LPBeFngvC7yXBc7LAudlgfOy4H9Z4LwscF4WOC8LnJcFzssC52WB87LAeVngvCxwXhY4LwucHwXOjwLnR4HzosB5UeC8KHBeFDgvCpwXBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOi+J8XBc6LAudFgfOiwHlR4LwocF4UOC8KnBcFzosC50WB86LAeVHgvChwXhQ4LwqcHwXOjwLnR4HzosB5UeC8KHBe/gEihI5pynfR/AAAAABJRU5ErkJggg==" alt="Karpador">
 
     <div class="frame-container">
         <div class="corner corner-tl"><div class="pokeball-icon"></div></div>
@@ -163,40 +194,40 @@
         <div class="corner corner-br"><div class="pokeball-icon"></div></div>
 
         <div id="menu" class="page active">
-            <h1>JGA<br>COMMAND CENTER</h1>
+            <h1>🍺 JGA Command Center 🍺</h1>
             <p>Willkommen zur legendärsten Tour des Jahres.</p>
-            <br>
-            <button class="btn" onclick="showPage('kasse'); loadDataFromCloud();">💰 KATZEKASSE</button>
-            <button class="btn" onclick="showPage('quiz')">🤓 HARDCORE QUIZ</button>
-            <button class="btn" style="opacity: 0.5; cursor: default;">📷 GALERIE (BALD)</button>
+            
+            <button class="btn" onclick="showPage('kasse'); loadDataFromCloud();">💰 Katzekasse (Abrechnung)</button>
+            <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
+            <button class="btn" onclick="alert('Beweismittel-Upload folgt bald!');">📸 Beweismittel hochladen</button>
         </div>
 
         <div id="kasse" class="page">
-            <h2>💰 KATZEKASSE</h2>
-            <div id="syncStatus">VERBINDE MIT SERVER...</div>
+            <h2 style="color: #ffcb05;">💰 Katzekasse</h2>
+            <div id="syncStatus">Verbinde mit Server...</div>
             
-            <p>ANZAHL SPIELER:</p>
+            <p style="text-align: left; color:#ccc;">Anzahl Spieler:</p>
             <input type="number" id="totalPeople" value="5" min="2" onchange="saveDataToCloud()">
             
-            <hr style="border: 1px dashed #fff; margin: 20px 0;">
+            <hr>
             
-            <p>NEUE AUSGABE:</p>
-            <input type="text" id="expName" placeholder="WER? (z.B. Max)">
-            <input type="text" id="expDesc" placeholder="WAS? (z.B. Bier)">
-            <input type="number" id="expAmount" placeholder="WIE VIEL? (€)">
-            <button class="btn" onclick="addExpense()">➕ EINTRAGEN</button>
+            <p style="text-align: left; color:#ccc;">Neue Ausgabe eintragen:</p>
+            <input type="text" id="expName" placeholder="Wer hat gezahlt? (z.B. Max)">
+            <input type="text" id="expDesc" placeholder="Wofür? (z.B. 1 Kasten Bier)">
+            <input type="number" id="expAmount" placeholder="Betrag in €">
+            <button class="btn" style="background-color: #2e7d32; border-color: #1b5e20;" onclick="addExpense()">➕ Eintragen</button>
             
-            <div id="expenseList" style="margin-top: 20px; text-align: left;"></div>
+            <div id="expenseList" style="margin-top: 20px;"></div>
             
-            <button class="btn" onclick="calculateSplit()">📊 ABRECHNUNG</button>
-            <div id="splitResult" style="text-align: left; margin-top: 20px; font-size: 9px;"></div>
+            <button class="btn" style="background-color: #1565c0; border-color: #0d47a1; margin-top: 15px;" onclick="calculateSplit()">📊 Abrechnung berechnen</button>
+            <div id="splitResult"></div>
             
-            <button class="btn" style="margin-top: 30px;" onclick="showPage('menu')">⬅️ ZURÜCK</button>
+            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Zurück zum Menü</button>
         </div>
 
         <div id="quiz" class="page">
-            <h2>🤓 TRAINER BATTLE</h2>
-            <div id="progress" style="color:#777; margin-bottom: 10px;">FRAGE 1 / 1</div>
+            <h2 style="color: #ffcb05;">🤓 Trainer Battle</h2>
+            <div id="progress" style="color:#aaa; margin-bottom: 10px; font-size: 8px;">Frage 1 / 1</div>
             
             <div class="question-box">
                 <div id="question">Lade Daten...</div>
@@ -205,8 +236,8 @@
             <div id="answers"></div>
             <div id="feedback"></div>
             
-            <button id="next-btn" class="btn" style="display:none;" onclick="nextQuestion()">NÄCHSTE RUNDE ➡️</button>
-            <button class="btn" style="margin-top: 30px;" onclick="showPage('menu')">⬅️ FLUCHT (MENÜ)</button>
+            <button id="next-btn" class="btn" style="display:none; background-color: #1565c0;" onclick="nextQuestion()">Nächste Runde ➡️</button>
+            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Flucht (Menü)</button>
         </div>
 
     </div>
@@ -228,7 +259,7 @@
         function loadDataFromCloud() {
             if (GOOGLE_SHEET_URL.includes("HIER_DEINE_URL")) {
                 document.getElementById('syncStatus').innerText = "⚠️ FEHLER: URL FEHLT IM CODE!";
-                document.getElementById('syncStatus').style.color = "red";
+                document.getElementById('syncStatus').style.color = "#ff4444";
                 return;
             }
             fetch(GOOGLE_SHEET_URL)
@@ -238,19 +269,30 @@
                     if (data.totalPeople) document.getElementById('totalPeople').value = data.totalPeople;
                     updateExpenseList();
                     document.getElementById('syncStatus').innerText = "✅ ONLINE VERBUNDEN";
+                    document.getElementById('syncStatus').style.color = "#4caf50";
                 })
-                .catch(e => document.getElementById('syncStatus').innerText = "❌ LADEFEHLER (OFFLINE?)");
+                .catch(e => {
+                    document.getElementById('syncStatus').innerText = "❌ LADEFEHLER (OFFLINE?)";
+                    document.getElementById('syncStatus').style.color = "#ff4444";
+                });
         }
 
         function saveDataToCloud() {
             appData.totalPeople = parseInt(document.getElementById('totalPeople').value) || 5;
-            document.getElementById('syncStatus').innerText = "⏳ SPEICHERE...";
+            document.getElementById('syncStatus').innerText = "⏳ SPEICHERE IN CLOUD...";
+            document.getElementById('syncStatus').style.color = "#ffcb05";
             
             const formData = new URLSearchParams();
             formData.append('data', JSON.stringify(appData));
             fetch(GOOGLE_SHEET_URL, { method: 'POST', body: formData })
-                .then(() => document.getElementById('syncStatus').innerText = "✅ GESPEICHERT")
-                .catch(() => document.getElementById('syncStatus').innerText = "❌ SPEICHERFEHLER");
+                .then(() => {
+                    document.getElementById('syncStatus').innerText = "✅ GESPEICHERT";
+                    document.getElementById('syncStatus').style.color = "#4caf50";
+                })
+                .catch(() => {
+                    document.getElementById('syncStatus').innerText = "❌ SPEICHERFEHLER";
+                    document.getElementById('syncStatus').style.color = "#ff4444";
+                });
         }
 
         function addExpense() {
@@ -269,10 +311,10 @@
 
         function updateExpenseList() {
             let listDiv = document.getElementById('expenseList');
-            if (!appData.expenses.length) { listDiv.innerHTML = "<small>Noch keine Ausgaben.</small>"; return; }
-            let html = '<p>BISHERIGE ITEMS:</p>';
+            if (!appData.expenses.length) { listDiv.innerHTML = "<small style='color:#777;'>Noch keine Ausgaben eingetragen.</small>"; return; }
+            let html = '<p style="text-align:left; color:#ccc;">Bisherige Items:</p>';
             appData.expenses.forEach((ex, i) => {
-                html += `<div class="expense-item"><div><b>${ex.name}</b>: ${ex.desc} (${ex.amount.toFixed(2)}€)</div><button class="del-btn" onclick="removeExpense(${i})">X</button></div>`;
+                html += `<div class="expense-item"><div><b style="color:#ffcb05;">${ex.name}</b>: ${ex.desc}<br>${ex.amount.toFixed(2)}€</div><button class="del-btn" onclick="removeExpense(${i})">X</button></div>`;
             });
             listDiv.innerHTML = html;
         }
@@ -294,11 +336,11 @@
             });
 
             let avg = total / totalPeople;
-            let html = `<p>GESAMT: ${total.toFixed(2)}€ (PRO KOPF: ${avg.toFixed(2)}€)</p><ul>`;
+            let html = `<p style="color:#ffcb05;">GESAMT: ${total.toFixed(2)}€</p><p>PRO KOPF: ${avg.toFixed(2)}€</p><hr><ul style="padding-left: 15px;">`;
             
             for (let person in paidPerPerson) {
                 let diff = paidPerPerson[person] - avg;
-                html += `<li>${person}: ${diff > 0 ? "Bekommt " + diff.toFixed(2) + "€" : "Zahlt " + Math.abs(diff).toFixed(2) + "€"}</li>`;
+                html += `<li style="margin-bottom:8px;">${person}: <br><span style="color:${diff > 0 ? '#4caf50' : '#ff4444'}">${diff > 0 ? "Bekommt " + diff.toFixed(2) + "€ zurück" : "Muss " + Math.abs(diff).toFixed(2) + "€ zahlen"}</span></li>`;
             }
             document.getElementById('splitResult').innerHTML = html + "</ul>";
         }
@@ -335,12 +377,17 @@
             let q = questions[currentQ];
             let fb = document.getElementById('feedback');
             fb.style.display = 'block';
+            let buttons = document.querySelectorAll('#answers .btn');
+            buttons.forEach(b => b.disabled = true); // Deaktiviert Buttons nach Klick
+
             if(i === q.correct) {
-                fb.innerText = "✅ RICHTIG! Die Crew trinkt!";
-                fb.style.borderColor = "#0f0";
+                fb.innerHTML = "✅ RICHTIG!<br>Die Crew trinkt!";
+                fb.style.borderColor = "#4caf50";
+                fb.style.color = "#4caf50";
             } else {
-                fb.innerText = "❌ FALSCH! Der Bräutigam trinkt!";
-                fb.style.borderColor = "#f00";
+                fb.innerHTML = "❌ FALSCH!<br>Der Bräutigam trinkt!";
+                fb.style.borderColor = "#ff4444";
+                fb.style.color = "#ff4444";
             }
             document.getElementById('next-btn').style.display = 'block';
         }
