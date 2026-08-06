@@ -189,7 +189,7 @@
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            touch-action: none; /* Verhindert Scrollen beim Gedrückthalten */
+            touch-action: none; 
             transition: all 0.2s;
             box-sizing: border-box;
         }
@@ -267,7 +267,6 @@
             <h2 style="color: #ffcb05;">☝️ Promille-Scanner</h2>
             <p>Lege deinen Daumen auf das Feld und halte ihn für <b>3 Sekunden</b> gedrückt!</p>
             
-            <!-- Events für Maus (PC) und Touch (Handy) -->
             <div id="scanner-btn" 
                  onmousedown="startScan(event)" 
                  onmouseup="stopScan(event)" 
@@ -412,7 +411,6 @@
         }
 
         function startScan(e) {
-            // e.preventDefault() sorgt dafür, dass das Handy nicht markiert/scrollt
             if(e && e.type !== 'mousedown') e.preventDefault(); 
             
             if (isScanning) return;
@@ -426,7 +424,6 @@
             resultText.innerHTML = "Blutbahn wird analysiert. Nicht loslassen...";
             resultText.style.color = "#ffcb05";
 
-            // 3 Sekunden Timer
             scanTimer = setTimeout(() => {
                 finishScan();
             }, 3000);
@@ -457,31 +454,51 @@
             
             let resultText = document.getElementById('scanner-result');
             
-            // Zufälliger Promille-Wert zwischen 0.1 und 3.4
-            let promille = (Math.random() * 3.3 + 0.1).toFixed(2);
-            let message = "";
-            let rank = "";
+            let promille = (Math.random() * 3.4 + 0.1).toFixed(2);
+            let state = {};
 
-            if (promille < 0.8) {
-                rank = "<span style='color:#ff4444; font-size: 14px;'>🚨 NÜCHTERN-ALARM</span>";
-                message = `Wert: <b>${promille} Promille</b><br><br>${rank}<br>Bist du gerade erst aufgestanden?! Sofort ein Getränk leeren (Exen)!`;
-            } else if (promille < 1.5) {
-                rank = "<span style='color:#ff9800; font-size: 14px;'>🐢 FLEGMON-PEGEL</span>";
-                message = `Wert: <b>${promille} Promille</b><br><br>${rank}<br>Ganz ok, aber da ist noch viel Luft nach oben. Trink 3 kräftige Schlucke!`;
-            } else if (promille < 2.5) {
-                rank = "<span style='color:#4caf50; font-size: 14px;'>🔥 GLURAK-MODUS</span>";
-                message = `Wert: <b>${promille} Promille</b><br><br>${rank}<br>Optimaler Betriebszustand! Du bist im Flow. Verteile 4 Schlucke an die Crew!`;
-            } else {
-                rank = "<span style='color:#9c27b0; font-size: 14px;'>💤 RELAXO-KOMA</span>";
-                message = `Wert: <b>${promille} Promille</b><br><br>${rank}<br>System überlastet! Trink sofort ein Glas Wasser und verteile 2 Shots!`;
+            const states = [
+                { max: 0.2, name: "🐛 Raupy-Räuspern", color: "#8bc34a", desc: "Hast du überhaupt schon am Bier gerochen? Komplettes Glas leeren!" },
+                { max: 0.3, name: "🗿 Safcon-Starrheit", color: "#cddc39", desc: "Du bist noch viel zu steif! Ein Shot zum Lockerwerden!" },
+                { max: 0.4, name: "🐟 Karpador-Platscher", color: "#e57373", desc: "Zappel hier nicht rum, trink 3 kräftige Schlucke!" },
+                { max: 0.5, name: "🥚 Togepi-Tapsen", color: "#ffecb3", desc: "Noch in der Eierschale? Wir sind auf nem JGA! Trink 4 Schlucke!" },
+                { max: 0.6, name: "🐭 Pichu-Prickeln", color: "#ffee58", desc: "Der erste leichte Schwips! Bestimme einen Trink-Buddy für 2 Schlucke." },
+                { max: 0.7, name: "🦆 Enton-Kopfweh", color: "#ffd54f", desc: "Erste Verwirrung setzt ein. Finde deinen Fokus mit 3 Schlucken!" },
+                { max: 0.8, name: "🚨 Nüchtern-Alarm", color: "#f44336", desc: "Viel zu klar im Kopf! Bräutigam sofort exen!" },
+                { max: 0.9, name: "🪙 Mauzi-Münze", color: "#ffca28", desc: "Zahl die nächste Runde oder trink zur Strafe 4 Schlucke!" },
+                { max: 1.0, name: "🎤 Pummeluff-Pegel", color: "#f48fb1", desc: "Wirst du müde? Ein Schnaps zum Wachwerden!" },
+                { max: 1.2, name: "🐢 Schiggy-Schluck", color: "#64b5f6", desc: "Flüssig dabei, du bist im Flow! Verteile 2 Schlucke." },
+                { max: 1.3, name: "🦇 Zubat-Zickzack", color: "#9575cd", desc: "Leichter Schwindel. Lauf im Kreis und trink 3 Schlucke!" },
+                { max: 1.5, name: "🦥 Flegmon-Pegel", color: "#f06292", desc: "Verzögerte Reaktion. Ganz ok, aber da geht mehr! 3 Schlucke." },
+                { max: 1.6, name: "🐍 Rettan-Rolle", color: "#ba68c8", desc: "Leichtes Schlangenlinien-Gehen. Hak dich bei wem ein. Ihr trinkt beide 2 Schlucke!" },
+                { max: 1.8, name: "📢 Krakeelo-Krawall", color: "#7986cb", desc: "Die Stimme wird lauter! Rufe laut deinen Namen und trink 3 Schlucke!" },
+                { max: 1.9, name: "🕺 Kappalores-Tanz", color: "#4db6ac", desc: "Die Hüfte kreist! Zeig einen Tanzmove oder verteile 3 Schlucke." },
+                { max: 2.1, name: "💪 Machomei-Mut", color: "#90a4ae", desc: "Fühlt sich stark! Armdrücken gegen den Trauzeugen. Verlierer trinkt!" },
+                { max: 2.3, name: "🔥 Glurak-Modus", color: "#ff7043", desc: "Optimaler Betriebszustand! Du brennst! Verteile 4 Schlucke!" },
+                { max: 2.5, name: "💨 Smogon-Schleier", color: "#b0bec5", desc: "Die Sicht wird trübe. Wähl jemanden, der noch klar sieht, für 2 Schlucke!" },
+                { max: 2.6, name: "💋 Rossana-Kuss", color: "#e1bee7", desc: "Sehr emotional. Umarme jemanden aus der Crew und verteile 2 Schlucke!" },
+                { max: 2.8, name: "👻 Gengar-Grinsen", color: "#7e57c2", desc: "Lachflash! Erzähl einen Witz. Lacht keiner, trinkst du 3 Schlucke!" },
+                { max: 3.0, name: "⚡ Voltobal-Kurzschluss", color: "#f44336", desc: "Das Gehirn wackelt! Achtung Explosion: Verteile 3 Shots!" },
+                { max: 3.1, name: "🦠 Sleima-Sumpf", color: "#81c784", desc: "Du klebst am Tresen! Motorik schwindet. Trink zur Abwechslung mal Wasser!" },
+                { max: 3.2, name: "🦍 Letarking-Lähmung", color: "#a1887f", desc: "Bewegung eingestellt. Setz dich kurz hin und trink 1 Schluck." },
+                { max: 5.0, name: "💤 Relaxo-Koma", color: "#1a237e", desc: "System überlastet! Game Over. Verteile 2 Shots und trink ein Wasser!" }
+            ];
+
+            for (let i = 0; i < states.length; i++) {
+                if (parseFloat(promille) <= states[i].max) {
+                    state = states[i];
+                    break;
+                }
             }
 
+            let message = `Wert: <b>${promille} Promille</b><br><br><span style='color:${state.color}; font-size: 14px;'><b>${state.name}</b></span><br><br>${state.desc}`;
+            
             resultText.innerHTML = message;
             resultText.style.color = "#fff";
         }
 
         // --- PIKACHUS DONNERBLITZ (BUTTON SMASH) LOGIK ---
-        let smashState = 'idle'; // idle, countdown, playing, finished
+        let smashState = 'idle'; 
         let smashClicks = 0;
         let smashTimeLeft = 5.0;
         let smashTimer;
