@@ -156,6 +156,24 @@
         }
         #reaction-box:active { transform: scale(0.98); }
 
+        /* === BUTTON SMASH STYLES === */
+        #smash-btn {
+            background-color: #fbc02d;
+            color: #000;
+            height: 120px;
+            font-size: 14px;
+            border: 4px solid #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 0 #bc8900;
+            transition: all 0.05s;
+            user-select: none;
+            touch-action: manipulation;
+        }
+        #smash-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #bc8900;
+        }
+
         /* === MUSIK BUTTON === */
         .music-btn {
             position: fixed;
@@ -205,15 +223,35 @@
             <p>Willkommen zur legendärsten Tour des Jahres.</p>
             
             <button class="btn" style="background-color: #1565c0; border-color: #0d47a1;" onclick="showPage('tracker')">🍬 Sonderbonbon-Tracker</button>
-            <button class="btn" onclick="showPage('reaction'); resetReactionTest();">⚡ Voltobal-Reflex</button>
+            <button class="btn" onclick="showPage('smash'); resetSmash();">⚡ Pikachus Donnerblitz</button>
+            <button class="btn" onclick="showPage('reaction'); resetReactionTest();">⏱️ Voltobal-Reflex</button>
             <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
             <button class="btn" onclick="showPage('roulette')">🎲 Relaxo Roulette</button>
             <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP?q=sharedwith:public%20parent:1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP', '_blank');">📸 Beweismittel hochladen</button>
         </div>
 
+        <!-- === BUTTON SMASH: DONNERBLITZ === -->
+        <div id="smash" class="page">
+            <h2 style="color: #ffcb05;">⚡ Donnerblitz</h2>
+            <p>Hämmer so oft du kannst auf den Button! Du hast 5 Sekunden.</p>
+            
+            <div style="display:flex; justify-content: space-between; font-size: 12px; margin-bottom: 15px; padding: 0 10px;">
+                <div style="color: #4caf50;">Zeit: <span id="smash-time" style="font-size: 16px;">5.0</span>s</div>
+                <div style="color: #ffcb05;">Klicks: <span id="smash-count" style="font-size: 16px;">0</span></div>
+            </div>
+
+            <button id="smash-btn" class="btn" onclick="handleSmash()">START & SMASH!</button>
+            
+            <div class="question-box" style="text-align: center; min-height: 80px; margin-top: 20px;">
+                <b id="smash-result" style="color: #aaa; font-size: 10px; line-height: 1.6;">Drücke den großen Button, um das Duell zu starten.</b>
+            </div>
+            
+            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu'); resetSmash();">⬅️ Flucht (Menü)</button>
+        </div>
+
         <!-- === REAKTIONSTEST === -->
         <div id="reaction" class="page">
-            <h2 style="color: #ffcb05;">⚡ Voltobal-Reflex</h2>
+            <h2 style="color: #ffcb05;">⏱️ Voltobal-Reflex</h2>
             <p>Tippe so schnell du kannst auf das Feld, sobald es <b>GRÜN</b> wird!</p>
             
             <div id="reaction-box" onclick="handleReactionClick()">
@@ -300,7 +338,97 @@
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- VOLTOBAL REAKTIONSTEST LOGIK (MIT RANGSYSTEM) ---
+        // --- PIKACHUS DONNERBLITZ (BUTTON SMASH) LOGIK ---
+        let smashState = 'idle'; // idle, playing, finished
+        let smashClicks = 0;
+        let smashTimeLeft = 5.0;
+        let smashTimer;
+
+        function resetSmash() {
+            smashState = 'idle';
+            smashClicks = 0;
+            smashTimeLeft = 5.0;
+            clearInterval(smashTimer);
+            
+            document.getElementById('smash-time').innerText = "5.0";
+            document.getElementById('smash-count').innerText = "0";
+            
+            let btn = document.getElementById('smash-btn');
+            btn.innerText = "START & SMASH!";
+            btn.style.backgroundColor = "#fbc02d";
+            btn.style.color = "#000";
+            
+            let resultText = document.getElementById('smash-result');
+            resultText.innerHTML = "Drücke den großen Button, um das Duell zu starten.";
+            resultText.style.color = "#aaa";
+        }
+
+        function handleSmash() {
+            if (smashState === 'finished') {
+                resetSmash();
+                return;
+            }
+
+            let btn = document.getElementById('smash-btn');
+
+            if (smashState === 'idle') {
+                smashState = 'playing';
+                btn.innerText = "HÄMMERN!!!";
+                btn.style.backgroundColor = "#ff9800";
+                
+                document.getElementById('smash-result').innerHTML = "⚡ VOLLE POWER! GIB ALLES! ⚡";
+                document.getElementById('smash-result').style.color = "#ffcb05";
+
+                // Timer starten
+                smashTimer = setInterval(() => {
+                    smashTimeLeft -= 0.1;
+                    if (smashTimeLeft <= 0.05) {
+                        smashTimeLeft = 0;
+                        endSmash();
+                    }
+                    document.getElementById('smash-time').innerText = smashTimeLeft.toFixed(1);
+                }, 100);
+            }
+
+            if (smashState === 'playing') {
+                smashClicks++;
+                document.getElementById('smash-count').innerText = smashClicks;
+            }
+        }
+
+        function endSmash() {
+            smashState = 'finished';
+            clearInterval(smashTimer);
+            
+            let btn = document.getElementById('smash-btn');
+            btn.innerText = "Erneut versuchen";
+            btn.style.backgroundColor = "#333";
+            btn.style.color = "#fff";
+
+            let resultText = document.getElementById('smash-result');
+            let message = "";
+            let rank = "";
+
+            if (smashClicks >= 65) {
+                rank = "<span style='color:#e0a96d; font-size: 14px;'>🏆 RANG: PIKACHU (S+)</span>";
+                message = `⚡ ${smashClicks} Klicks! Wahnsinn!<br><br>${rank}<br><span style="color:#4caf50;"><b>Donnerblitz!</b></span><br>Der absolute Wahnsinn. Verteile 3 Schlucke!`;
+            } else if (smashClicks >= 45) {
+                rank = "<span style='color:#ffcb05; font-size: 14px;'>🏅 RANG: RAICHU (A)</span>";
+                message = `⚡ ${smashClicks} Klicks!<br><br>${rank}<br><span style="color:#4caf50;"><b>Starke Leistung!</b></span><br>Gute Kondition! Verteile 1 Schluck!`;
+            } else if (smashClicks >= 30) {
+                rank = "<span style='color:#ff9800; font-size: 14px;'>🥈 RANG: MACHOLLO (B)</span>";
+                message = `⚡ ${smashClicks} Klicks.<br><br>${rank}<br><span style="color:#ff9800;"><b>Ganz okay.</b></span><br>Keine Belohnung, keine Strafe. Nächster!`;
+            } else {
+                rank = "<span style='color:#ff4444; font-size: 14px;'>💀 RANG: FLEGMON (F)</span>";
+                message = `⚡ ${smashClicks} Klicks... echt jetzt?<br><br>${rank}<br><span style="color:#ff4444;"><b>Viel zu langsam!</b></span><br>Du hast keine Energie mehr. Trink 2 Schlucke!`;
+            }
+
+            resultText.innerHTML = message;
+            resultText.style.color = "#fff";
+        }
+
+
+        // --- VOLTOBAL REAKTIONSTEST LOGIK ---
         let reactionState = 'idle'; // idle, waiting, ready
         let reactionTimeout;
         let reactionStartTime;
@@ -321,7 +449,7 @@
 
             if (reactionState === 'idle') {
                 reactionState = 'waiting';
-                box.style.backgroundColor = '#b71c1c'; // Dunkelrot
+                box.style.backgroundColor = '#b71c1c'; 
                 box.innerText = "Warte auf Grün...";
                 resultText.innerHTML = "Voltobal lädt auf... noch NICHT tippen!";
                 resultText.style.color = "#ffcb05";
@@ -331,14 +459,13 @@
                 reactionTimeout = setTimeout(() => {
                     if (reactionState === 'waiting') {
                         reactionState = 'ready';
-                        box.style.backgroundColor = '#4caf50'; // Grün
+                        box.style.backgroundColor = '#4caf50'; 
                         box.innerText = "ZUFASSEN!";
                         reactionStartTime = Date.now();
                     }
                 }, randomDelay);
 
             } else if (reactionState === 'waiting') {
-                // Fehlstart
                 clearTimeout(reactionTimeout);
                 reactionState = 'idle';
                 box.style.backgroundColor = '#111';
@@ -347,7 +474,6 @@
                 resultText.style.color = "#ff4444";
 
             } else if (reactionState === 'ready') {
-                // Erfolgreich geklickt
                 let reactionTime = Date.now() - reactionStartTime;
                 reactionState = 'idle';
                 box.style.backgroundColor = '#111';
