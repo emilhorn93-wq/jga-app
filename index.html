@@ -201,7 +201,7 @@
 </head>
 <body>
 
-    <!-- === AUDIO PLAYER (Läuft in Endlosschleife) === -->
+    <!-- === AUDIO PLAYER === -->
     <audio id="bgm" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
@@ -240,7 +240,10 @@
                 <div style="color: #ffcb05;">Klicks: <span id="smash-count" style="font-size: 16px;">0</span></div>
             </div>
 
-            <button id="smash-btn" class="btn" onclick="handleSmash()">START & SMASH!</button>
+            <button id="smash-btn" class="btn" onclick="handleSmash()">START</button>
+            
+            <!-- Neuer, separater Neustart-Button -->
+            <button id="smash-restart-btn" class="btn" style="display:none; background-color: #1565c0; border-color: #0d47a1; margin-top: 15px;" onclick="startSmashCountdown()">🔄 NEUSTART</button>
             
             <div class="question-box" style="text-align: center; min-height: 80px; margin-top: 20px;">
                 <b id="smash-result" style="color: #aaa; font-size: 10px; line-height: 1.6;">Drücke den großen Button, um das Duell zu starten.</b>
@@ -339,24 +342,28 @@
         }
 
         // --- PIKACHUS DONNERBLITZ (BUTTON SMASH) LOGIK ---
-        let smashState = 'idle'; // idle, playing, finished
+        let smashState = 'idle'; // idle, countdown, playing, finished
         let smashClicks = 0;
         let smashTimeLeft = 5.0;
         let smashTimer;
+        let countdownTimer;
 
         function resetSmash() {
             smashState = 'idle';
             smashClicks = 0;
             smashTimeLeft = 5.0;
             clearInterval(smashTimer);
+            clearTimeout(countdownTimer);
             
             document.getElementById('smash-time').innerText = "5.0";
             document.getElementById('smash-count').innerText = "0";
             
             let btn = document.getElementById('smash-btn');
-            btn.innerText = "START & SMASH!";
+            btn.innerText = "START";
             btn.style.backgroundColor = "#fbc02d";
             btn.style.color = "#000";
+            
+            document.getElementById('smash-restart-btn').style.display = "none";
             
             let resultText = document.getElementById('smash-result');
             resultText.innerHTML = "Drücke den großen Button, um das Duell zu starten.";
@@ -364,30 +371,9 @@
         }
 
         function handleSmash() {
-            if (smashState === 'finished') {
-                resetSmash();
-                return;
-            }
-
-            let btn = document.getElementById('smash-btn');
-
             if (smashState === 'idle') {
-                smashState = 'playing';
-                btn.innerText = "HÄMMERN!!!";
-                btn.style.backgroundColor = "#ff9800";
-                
-                document.getElementById('smash-result').innerHTML = "⚡ VOLLE POWER! GIB ALLES! ⚡";
-                document.getElementById('smash-result').style.color = "#ffcb05";
-
-                // Timer starten
-                smashTimer = setInterval(() => {
-                    smashTimeLeft -= 0.1;
-                    if (smashTimeLeft <= 0.05) {
-                        smashTimeLeft = 0;
-                        endSmash();
-                    }
-                    document.getElementById('smash-time').innerText = smashTimeLeft.toFixed(1);
-                }, 100);
+                startSmashCountdown();
+                return;
             }
 
             if (smashState === 'playing') {
@@ -396,14 +382,63 @@
             }
         }
 
+        function startSmashCountdown() {
+            smashState = 'countdown';
+            smashClicks = 0;
+            smashTimeLeft = 5.0;
+            clearInterval(smashTimer);
+            
+            document.getElementById('smash-restart-btn').style.display = "none";
+            
+            document.getElementById('smash-time').innerText = "5.0";
+            document.getElementById('smash-count').innerText = "0";
+            document.getElementById('smash-result').innerHTML = "Mach dich bereit...";
+            document.getElementById('smash-result').style.color = "#fff";
+            
+            let btn = document.getElementById('smash-btn');
+            btn.style.backgroundColor = "#ff9800";
+            btn.innerText = "2...";
+            
+            countdownTimer = setTimeout(() => {
+                if(smashState !== 'countdown') return;
+                btn.innerText = "1...";
+                
+                countdownTimer = setTimeout(() => {
+                    if(smashState !== 'countdown') return;
+                    startGameplay();
+                }, 1000);
+            }, 1000);
+        }
+
+        function startGameplay() {
+            smashState = 'playing';
+            let btn = document.getElementById('smash-btn');
+            btn.innerText = "HÄMMERN!!!";
+            btn.style.backgroundColor = "#ff3d00"; 
+            
+            document.getElementById('smash-result').innerHTML = "⚡ VOLLE POWER! GIB ALLES! ⚡";
+            document.getElementById('smash-result').style.color = "#ffcb05";
+
+            smashTimer = setInterval(() => {
+                smashTimeLeft -= 0.1;
+                if (smashTimeLeft <= 0.05) {
+                    smashTimeLeft = 0;
+                    endSmash();
+                }
+                document.getElementById('smash-time').innerText = smashTimeLeft.toFixed(1);
+            }, 100);
+        }
+
         function endSmash() {
             smashState = 'finished';
             clearInterval(smashTimer);
             
             let btn = document.getElementById('smash-btn');
-            btn.innerText = "Erneut versuchen";
-            btn.style.backgroundColor = "#333";
-            btn.style.color = "#fff";
+            btn.innerText = "ZEIT UM!";
+            btn.style.backgroundColor = "#555";
+            btn.style.color = "#ccc";
+            
+            document.getElementById('smash-restart-btn').style.display = "block";
 
             let resultText = document.getElementById('smash-result');
             let message = "";
@@ -428,8 +463,8 @@
         }
 
 
-        // --- VOLTOBAL REAKTIONSTEST LOGIK ---
-        let reactionState = 'idle'; // idle, waiting, ready
+        // --- VOLTOBAL REAKTIONSTEST LOGIK (MIT RANGSYSTEM) ---
+        let reactionState = 'idle';
         let reactionTimeout;
         let reactionStartTime;
 
