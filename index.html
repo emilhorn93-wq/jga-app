@@ -125,47 +125,9 @@
         .btn:hover { background-color: #444444; border-color: #777777; }
         .btn:active { transform: scale(0.98); }
 
-        /* Eingabefelder */
-        input {
-            width: 90%;
-            background: #111;
-            color: #fff;
-            border: 2px solid #555;
-            border-radius: 4px;
-            padding: 12px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 9px;
-            margin-bottom: 10px;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        /* Listen & Ergebnisse */
-        .expense-item {
-            border: 2px solid #555;
-            background: #1a1a1a;
-            padding: 10px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 8px;
-            border-radius: 4px;
-            text-align: left;
-        }
-        .del-btn {
-            background: #ff4444; color: #fff;
-            border: 2px solid #000; padding: 5px 8px;
-            cursor: pointer; font-family: inherit; border-radius: 4px;
-        }
-        
         .page { display: none; }
         .page.active { display: block; }
         
-        #syncStatus { color: #888; font-size: 7px; margin-bottom: 15px; }
-        #splitResult { text-align: left; margin-top: 15px; font-size: 8px; line-height: 1.8; }
-        hr { border: none; border-top: 2px solid #555; margin: 20px 0; }
-
         .question-box {
             border: 2px solid #555;
             background: #111;
@@ -194,34 +156,29 @@
             <h1>🍺 JGA Command Center 🍺</h1>
             <p>Willkommen zur legendärsten Tour des Jahres.</p>
             
-            <button class="btn" onclick="showPage('kasse'); loadDataFromCloud();">💰 Katzekasse (Abrechnung)</button>
+            <button class="btn" style="background-color: #1565c0; border-color: #0d47a1;" onclick="showPage('tracker')">🍬 Sonderbonbon-Tracker</button>
             <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
             <button class="btn" onclick="showPage('roulette')">🎲 Relaxo Roulette</button>
             <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP?q=sharedwith:public%20parent:1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP', '_blank');">📸 Beweismittel hochladen</button>
         </div>
 
-        <!-- === KASSE === -->
-        <div id="kasse" class="page">
-            <h2 style="color: #ffcb05;">💰 Katzekasse</h2>
-            <div id="syncStatus">Verbinde mit Server...</div>
+        <!-- === SONDERBONBON TRACKER === -->
+        <div id="tracker" class="page">
+            <h2 style="color: #ffcb05;">🍬 Sonderbonbons</h2>
+            <p>Füttere den Bräutigam, damit er sich entwickelt!</p>
             
-            <p style="text-align: left; color:#ccc;">Anzahl Spieler:</p>
-            <input type="number" id="totalPeople" value="5" min="2" onchange="saveDataToCloud()">
+            <div class="question-box" style="text-align: center;">
+                <h1 id="level-display" style="font-size: 20px; margin: 10px 0; color: #fff;">Level 1</h1>
+                <p id="status-display" style="color: #ffcb05; font-size: 9px; line-height: 1.8;">Lade Status...</p>
+            </div>
             
-            <hr>
+            <button class="btn" style="background-color: #2e7d32; border-color: #1b5e20; padding: 20px; font-size: 10px;" onclick="addSonderbonbon()">🍺 +1 Sonderbonbon füttern!</button>
             
-            <p style="text-align: left; color:#ccc;">Neue Ausgabe eintragen:</p>
-            <input type="text" id="expName" placeholder="Wer hat gezahlt? (z.B. Max)">
-            <input type="text" id="expDesc" placeholder="Wofür? (z.B. 1 Kasten Bier)">
-            <input type="number" id="expAmount" placeholder="Betrag in €">
-            <button class="btn" style="background-color: #2e7d32; border-color: #1b5e20;" onclick="addExpense()">➕ Eintragen</button>
+            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Flucht (Menü)</button>
             
-            <div id="expenseList" style="margin-top: 20px;"></div>
-            
-            <button class="btn" style="background-color: #1565c0; border-color: #0d47a1; margin-top: 15px;" onclick="calculateSplit()">📊 Abrechnung berechnen</button>
-            <div id="splitResult"></div>
-            
-            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Zurück zum Menü</button>
+            <div style="margin-top: 20px; text-align: right;">
+                <span style="color: #777; font-size: 7px; cursor: pointer;" onclick="resetTracker()">[🔄 Tracker zurücksetzen]</span>
+            </div>
         </div>
 
         <!-- === QUIZ === -->
@@ -245,7 +202,7 @@
             <h2 style="color: #ffcb05;">🎲 Relaxo Roulette</h2>
             <p>Traust du dich, den Pokéball zu werfen?</p>
             
-            <div class="question-box" style="text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center;">
+            <div class="question-box" style="text-align: center; min-height: 100px; display: flex; align-items: center; justify-content: center;">
                 <b id="roulette-result" style="color: #fff; font-size: 11px;">Klicke unten, um dein Schicksal zu erfahren...</b>
             </div>
             
@@ -256,107 +213,79 @@
     </div>
 
     <script>
-        // ==========================================
-        // ⚠️ DEINE GOOGLE URL HIER EINFÜGEN FÜR DIE KASSE:
-        const GOOGLE_SHEET_URL = "HIER_DEINE_URL_EINFÜGEN";
-        // ==========================================
-
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- CLOUD DATENBANK FÜR KASSE ---
-        let appData = { totalPeople: 5, expenses: [] };
+        // --- SONDERBONBON TRACKER LOGIK ---
+        let groomLevel = 1;
 
-        function loadDataFromCloud() {
-            if (GOOGLE_SHEET_URL.includes("HIER_DEINE_URL")) {
-                document.getElementById('syncStatus').innerText = "⚠️ FEHLER: URL FEHLT IM CODE!";
-                document.getElementById('syncStatus').style.color = "#ff4444";
-                return;
+        function initTracker() {
+            let savedLevel = localStorage.getItem('jga_groom_level');
+            if (savedLevel) {
+                groomLevel = parseInt(savedLevel);
             }
-            fetch(GOOGLE_SHEET_URL)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.expenses) appData = data;
-                    if (data.totalPeople) document.getElementById('totalPeople').value = data.totalPeople;
-                    updateExpenseList();
-                    document.getElementById('syncStatus').innerText = "✅ ONLINE VERBUNDEN";
-                    document.getElementById('syncStatus').style.color = "#4caf50";
-                })
-                .catch(e => {
-                    document.getElementById('syncStatus').innerText = "❌ LADEFEHLER (OFFLINE?)";
-                    document.getElementById('syncStatus').style.color = "#ff4444";
-                });
+            updateTrackerUI();
         }
 
-        function saveDataToCloud() {
-            appData.totalPeople = parseInt(document.getElementById('totalPeople').value) || 5;
-            document.getElementById('syncStatus').innerText = "⏳ SPEICHERE IN CLOUD...";
-            document.getElementById('syncStatus').style.color = "#ffcb05";
+        function addSonderbonbon() {
+            groomLevel++;
+            localStorage.setItem('jga_groom_level', groomLevel);
+            updateTrackerUI();
             
-            const formData = new URLSearchParams();
-            formData.append('data', JSON.stringify(appData));
-            fetch(GOOGLE_SHEET_URL, { method: 'POST', body: formData })
-                .then(() => {
-                    document.getElementById('syncStatus').innerText = "✅ GESPEICHERT";
-                    document.getElementById('syncStatus').style.color = "#4caf50";
-                })
-                .catch(() => {
-                    document.getElementById('syncStatus').innerText = "❌ SPEICHERFEHLER";
-                    document.getElementById('syncStatus').style.color = "#ff4444";
-                });
+            let lvlDisplay = document.getElementById('level-display');
+            lvlDisplay.style.color = "#4caf50";
+            setTimeout(() => { lvlDisplay.style.color = "#ffffff"; }, 300);
         }
 
-        function addExpense() {
-            let name = document.getElementById('expName').value.trim();
-            let desc = document.getElementById('expDesc').value.trim();
-            let amount = parseFloat(document.getElementById('expAmount').value.replace(',', '.'));
-
-            if (!name || isNaN(amount) || amount <= 0) { alert("Bitte Name & Betrag eingeben!"); return; }
-
-            appData.expenses.push({ name, desc, amount });
-            document.getElementById('expDesc').value = '';
-            document.getElementById('expAmount').value = '';
-            updateExpenseList();
-            saveDataToCloud();
-        }
-
-        function updateExpenseList() {
-            let listDiv = document.getElementById('expenseList');
-            if (!appData.expenses.length) { listDiv.innerHTML = "<small style='color:#777;'>Noch keine Ausgaben eingetragen.</small>"; return; }
-            let html = '<p style="text-align:left; color:#ccc;">Bisherige Items:</p>';
-            appData.expenses.forEach((ex, i) => {
-                html += `<div class="expense-item"><div><b style="color:#ffcb05;">${ex.name}</b>: ${ex.desc}<br>${ex.amount.toFixed(2)}€</div><button class="del-btn" onclick="removeExpense(${i})">X</button></div>`;
-            });
-            listDiv.innerHTML = html;
-        }
-
-        function removeExpense(i) {
-            appData.expenses.splice(i, 1);
-            updateExpenseList();
-            saveDataToCloud();
-        }
-
-        function calculateSplit() {
-            if (!appData.expenses.length) return;
-            let total = 0, paidPerPerson = {}, totalPeople = parseInt(document.getElementById('totalPeople').value);
+        function updateTrackerUI() {
+            document.getElementById('level-display').innerText = "Level " + groomLevel;
             
-            appData.expenses.forEach(ex => {
-                total += ex.amount;
-                let key = ex.name.toUpperCase();
-                paidPerPerson[key] = (paidPerPerson[key] || 0) + ex.amount;
-            });
+            const pokemonLevels = [
+                { name: "Fehler", desc: "" }, // Index 0 wird nicht genutzt
+                { name: "Karpador 🐟", desc: "Nüchtern. Zappelt nur motiviert rum." }, // 1
+                { name: "Raupy 🐛", desc: "Harmlos. Das erste Bier schmeckt." }, // 2
+                { name: "Bummelz 🦥", desc: "Wird entspannter. Der Stress fällt ab." }, // 3
+                { name: "Flegmon 🐢", desc: "Erste Verzögerungen in der Reaktionszeit." }, // 4
+                { name: "Enton 🦆", desc: "Kopf kratzen. Was war nochmal das Thema?" }, // 5
+                { name: "Glumanda 🔥", desc: "Flämmchen brennt, die Stimmung steigt!" }, // 6
+                { name: "Krakeelo 📢", desc: "Die Stimme wird lauter, redet überall rein." }, // 7
+                { name: "Kappalores 🕺", desc: "Die Hüfte kreist. Der Tanzbär erwacht!" }, // 8
+                { name: "Machollo 💪", desc: "Fühlt sich stark. Möchte anstoßen!" }, // 9
+                { name: "Schiggy mit Brille 😎", desc: "Absolute Coolness. Hält sich für unbesiegbar." }, // 10
+                { name: "Schlurp 👅", desc: "Die Lippen werden schwer, leichtes Lallen." }, // 11
+                { name: "Rossana 💋", desc: "Emotionale Phase. Will alle umarmen." }, // 12
+                { name: "Voltobal ⚡", desc: "Geladen! Bereit für Shots und dumme Ideen." }, // 13
+                { name: "Pandir 🐼", desc: "Taumelt leicht. Die Füße gehen eigene Wege." }, // 14
+                { name: "Pummeluff 🎤", desc: "Möchte singen, laut, falsch, aber mit Gefühl!" }, // 15
+                { name: "Gengar 👻", desc: "Lachflash. Kichert über den dümmsten Mist." }, // 16
+                { name: "Sleima 🦠", desc: "Motorik lässt nach. Klebt am Tresen fest." }, // 17
+                { name: "Fletiamo 🦇", desc: "Komplett blind, navigiert per Ultraschall." }, // 18
+                { name: "Letarking 🦍", desc: "Bewegt sich nur noch, wenn es zwingend nötig ist." }, // 19
+                { name: "Relaxo 😴", desc: "Kritischer Ausfall. Sucht Döner und ein Bett." } // 20
+            ];
 
-            let avg = total / totalPeople;
-            let html = `<p style="color:#ffcb05;">GESAMT: ${total.toFixed(2)}€</p><p>PRO KOPF: ${avg.toFixed(2)}€</p><hr><ul style="padding-left: 15px;">`;
-            
-            for (let person in paidPerPerson) {
-                let diff = paidPerPerson[person] - avg;
-                html += `<li style="margin-bottom:8px;">${person}: <br><span style="color:${diff > 0 ? '#4caf50' : '#ff4444'}">${diff > 0 ? "Bekommt " + diff.toFixed(2) + "€ zurück" : "Muss " + Math.abs(diff).toFixed(2) + "€ zahlen"}</span></li>`;
+            let status = "";
+            if (groomLevel <= 20) {
+                let currentStatus = pokemonLevels[groomLevel];
+                status = currentStatus.name + "<br><span style='color:#ccc; font-size:8px;'>" + currentStatus.desc + "</span>";
+            } else {
+                status = "MissingNo. 🔲<br><span style='color:#ccc; font-size:8px;'>Glitch in der Matrix. Filmriss wird geladen...</span>";
             }
-            document.getElementById('splitResult').innerHTML = html + "</ul>";
+            
+            document.getElementById('status-display').innerHTML = status;
         }
+
+        function resetTracker() {
+            if(confirm("Willst du den Bräutigam wirklich wieder auf Level 1 (nüchtern) zurücksetzen?")) {
+                groomLevel = 1;
+                localStorage.setItem('jga_groom_level', groomLevel);
+                updateTrackerUI();
+            }
+        }
+        
+        initTracker();
 
         // --- QUIZ FRAGEN ---
         const questions = [
@@ -434,7 +363,27 @@
             "💨 Smogon-Rauchwolke: Der Letzte, der sich die Nase zuhält, muss trinken!",
             "🧠 Mewtu-Telepathie: Erzähle eine kurze, peinliche Story über den Bräutigam oder trinke einen Shot!",
             "🪙 Mauzi-Zahltag: Wer als Erstes eine Münze aus der Tasche holt und hochhält, darf 3 Schlucke verteilen.",
-            "🐦 Taubsi-Wirbelwind: Alle rücken einen Platz weiter (oder tauschen die Plätze). Der Letzte, der steht, trinkt."
+            "🐦 Taubsi-Wirbelwind: Alle rücken einen Platz weiter (oder tauschen die Plätze). Der Letzte, der steht, trinkt.",
+            "😵 Enton-Kopfschmerz: Halte dir den Kopf und stöhne 'Enton...'. Der Letzte, der das nachmacht, trinkt 2 Schlucke!",
+            "🎤 Pummeluff-Gesang: Summe ein bekanntes Lied. Wer es zuerst errät, darf 3 Schlucke verteilen. Errät es niemand, trinkst du!",
+            "💪 Machomei-Flex: Zeig deinen Bizeps! Jeder am Tisch muss ihn loben. Wer nicht enthusiastisch genug ist, trinkt.",
+            "🕶️ Schiggy-Meute: Setz deine coolste (imaginäre) Sonnenbrille auf. Alle anderen müssen aus Respekt einen Schluck trinken.",
+            "👆 Piepi-Metronom: Zeige auf eine Person. Diese Person darf eine neue Trinkregel für die nächsten 10 Minuten aufstellen!",
+            "🗿 Safcon-Härtner: Du darfst deine Arme für 5 Minuten nicht mehr beugen (T-Rex-Modus). Wirst du erwischt: 1 Schluck!",
+            "🧲 Magneton-Anziehung: Die drei Personen, die aktuell am nächsten beieinander stehen, müssen anstoßen und trinken.",
+            "💣 Lektrobal-Explosion: Wirf eine (imaginäre) Bombe. Alle müssen sich ducken. Der Letzte trinkt seinen Becher leer!",
+            "💋 Rossana-Todeskuss: Schicke jemandem einen dicken Luftkuss. Diese Person muss vor Schreck sofort trinken.",
+            "🕸️ Raupy-Fadenschuss: Wähle zwei Spieler. Sie müssen für 10 Minuten ihre Hände aneinanderhalten. Lösen sie sich: beide trinken!",
+            "✨ Abra-Teleport: Du darfst wortlos den Raum verlassen (für Toilette/Bar). Niemand darf dich aufhalten oder ansprechen.",
+            "🕳️ Digda-Schaufler: Hocke dich sofort auf den Boden. Der Erste, der 'Digda!' ruft, darf 2 Schlucke verteilen.",
+            "🌿 Bisasam-Rankenhieb: Du darfst zwei Leuten einen sanften Klaps auf den Hinterkopf geben. Diese beiden trinken!",
+            "🦄 Goldini-Hornbohrer: One-Hit-KO! Wähle ein 'Opfer' – diese Person muss ihr halbes Glas leeren.",
+            "👅 Alpollo-Schlecker: Zunge raus! Wer als Letztes die Zunge rausstreckt, trinkt 2 Schlucke.",
+            "🔥 Lavados-Feuerwirbel: Alle trinken sofort einen großen Schluck!",
+            "❓ Owei-Verwirrung: Ab jetzt müssen alle Fragen mit einer Gegenfrage beantwortet werden. Wer normal antwortet, trinkt!",
+            "🧱 Pantimos-Barriere: Du baust eine unsichtbare Wand auf. Niemand darf dir in den nächsten 5 Minuten etwas anreichen.",
+            "🦇 Zubat-Ultraschall: Schließe die Augen, dreh dich 3x im Kreis und zeige blind auf jemanden. Diese Person trinkt!",
+            "🐢 Turtok-Hydropumpe: Wähle jemanden aus, der sofort sein komplettes restliches Getränk austrinken muss (Exen)!"
         ];
 
         function spinRoulette() {
