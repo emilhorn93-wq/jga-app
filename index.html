@@ -156,9 +156,40 @@
         }
         #reaction-box:active { transform: scale(0.98); }
 
+        /* === MUSIK BUTTON === */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffcb05;
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 2px 0px #000;
+            transition: transform 0.2s;
+        }
+        .music-btn:active {
+            transform: scale(0.9);
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- === AUDIO PLAYER (Läuft in Endlosschleife) === -->
+    <audio id="bgm" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- === SCHWEBENDER MUSIK-BUTTON === -->
+    <button id="musicBtn" class="music-btn" onclick="toggleMusic()">🔇</button>
 
     <img class="big-karpador" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/129.png" alt="Karpador">
 
@@ -189,7 +220,7 @@
                 Starten
             </div>
             
-            <div class="question-box" style="text-align: center; min-height: 50px;">
+            <div class="question-box" style="text-align: center; min-height: 80px;">
                 <b id="reaction-result" style="color: #aaa; font-size: 10px; line-height: 1.6;">Drücke 'Starten', um den Promille-Test zu beginnen.</b>
             </div>
             
@@ -247,12 +278,29 @@
     </div>
 
     <script>
+        // --- MUSIK LOGIK ---
+        let bgm = document.getElementById("bgm");
+        let musicBtn = document.getElementById("musicBtn");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgm.pause();
+                musicBtn.innerText = "🔇";
+            } else {
+                bgm.play();
+                musicBtn.innerText = "🎵";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // --- NAVIGATION ---
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- VOLTOBAL REAKTIONSTEST LOGIK ---
+        // --- VOLTOBAL REAKTIONSTEST LOGIK (MIT RANGSYSTEM) ---
         let reactionState = 'idle'; // idle, waiting, ready
         let reactionTimeout;
         let reactionStartTime;
@@ -272,14 +320,12 @@
             let resultText = document.getElementById('reaction-result');
 
             if (reactionState === 'idle') {
-                // Spiel starten
                 reactionState = 'waiting';
                 box.style.backgroundColor = '#b71c1c'; // Dunkelrot
                 box.innerText = "Warte auf Grün...";
                 resultText.innerHTML = "Voltobal lädt auf... noch NICHT tippen!";
                 resultText.style.color = "#ffcb05";
                 
-                // Zufällige Wartezeit zwischen 2 und 6 Sekunden
                 let randomDelay = Math.floor(Math.random() * 4000) + 2000;
                 
                 reactionTimeout = setTimeout(() => {
@@ -292,7 +338,7 @@
                 }, randomDelay);
 
             } else if (reactionState === 'waiting') {
-                // Zu früh geklickt! Fehlstart!
+                // Fehlstart
                 clearTimeout(reactionTimeout);
                 reactionState = 'idle';
                 box.style.backgroundColor = '#111';
@@ -301,19 +347,30 @@
                 resultText.style.color = "#ff4444";
 
             } else if (reactionState === 'ready') {
-                // Erfolgreich geklickt! Zeit messen!
+                // Erfolgreich geklickt
                 let reactionTime = Date.now() - reactionStartTime;
                 reactionState = 'idle';
                 box.style.backgroundColor = '#111';
                 box.innerText = "Nochmal versuchen";
                 
                 let message = "";
-                if (reactionTime < 300) {
-                    message = `⏱️ ${reactionTime} ms<br><br><span style="color:#4caf50;"><b>Pikachu-Reflexe!</b></span><br>Du bist nüchtern. Verteile 3 Schlucke!`;
+                let rank = "";
+
+                if (reactionTime < 250) {
+                    rank = "<span style='color:#e0a96d; font-size: 14px;'>🏆 RANG: MEISTERBALL (S+)</span>";
+                    message = `⏱️ ${reactionTime} ms<br><br>${rank}<br><span style="color:#4caf50;"><b>Ninjask-Reflexe!</b></span><br>Bist du ein Ninja? Verteile 4 Schlucke!`;
+                } else if (reactionTime < 350) {
+                    rank = "<span style='color:#ffcb05; font-size: 14px;'>🏅 RANG: HYPERBALL (A)</span>";
+                    message = `⏱️ ${reactionTime} ms<br><br>${rank}<br><span style="color:#4caf50;"><b>Pikachu-Reflexe!</b></span><br>Noch fast nüchtern. Verteile 2 Schlucke!`;
                 } else if (reactionTime < 500) {
-                    message = `⏱️ ${reactionTime} ms<br><br><span style="color:#ffcb05;"><b>Flegmon-Modus.</b></span><br>Der Alkohol wirkt schon. Trink 1 Schluck!`;
+                    rank = "<span style='color:#4caf50; font-size: 14px;'>🥈 RANG: SUPERBALL (B)</span>";
+                    message = `⏱️ ${reactionTime} ms<br><br>${rank}<br><span style="color:#ffcb05;"><b>Taubsi-Niveau.</b></span><br>Solider Schnitt. Bestimme jemanden, der 1 Schluck trinkt.`;
+                } else if (reactionTime < 700) {
+                    rank = "<span style='color:#ff9800; font-size: 14px;'>🥉 RANG: POKÉBALL (C)</span>";
+                    message = `⏱️ ${reactionTime} ms<br><br>${rank}<br><span style="color:#ff9800;"><b>Flegmon-Modus.</b></span><br>Der Pegel steigt merklich. Trink selbst 1 Schluck!`;
                 } else {
-                    message = `⏱️ ${reactionTime} ms<br><br><span style="color:#ff4444;"><b>Relaxo im Koma!</b></span><br>Absolut fahruntüchtig! Trink 3 Schlucke!`;
+                    rank = "<span style='color:#ff4444; font-size: 14px;'>💀 RANG: KARPADOR (F)</span>";
+                    message = `⏱️ ${reactionTime} ms<br><br>${rank}<br><span style="color:#ff4444;"><b>Relaxo im Koma!</b></span><br>Absolut fahruntüchtig! Trink 3 Schlucke!`;
                 }
                 
                 resultText.innerHTML = message;
