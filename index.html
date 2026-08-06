@@ -139,6 +139,18 @@
         }
         #feedback { display: none; margin-top: 15px; padding: 10px; border: 2px solid #fff; border-radius: 6px; }
 
+        /* Animation für den Alarm */
+        @keyframes flashRed {
+            0% { background-color: #330000; }
+            50% { background-color: #ff0000; }
+            100% { background-color: #330000; }
+        }
+        .alarm-box {
+            animation: flashRed 1s infinite;
+            border-color: #ff4444 !important;
+            text-align: center !important;
+        }
+
     </style>
 </head>
 <body>
@@ -160,6 +172,25 @@
             <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
             <button class="btn" onclick="showPage('roulette')">🎲 Relaxo Roulette</button>
             <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP?q=sharedwith:public%20parent:1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP', '_blank');">📸 Beweismittel hochladen</button>
+            
+            <hr>
+            <button class="btn" style="background-color: #d32f2f; border-color: #b71c1c; font-size: 11px; padding: 20px;" onclick="showPage('flute')">📯 POKÉFLÖTE (NOTFALL)</button>
+        </div>
+
+        <!-- === DIE POKÉFLÖTE (NOTFALL-ALARM) === -->
+        <div id="flute" class="page">
+            <h2 style="color: #ffcb05;">📯 POKÉFLÖTE 📯</h2>
+            
+            <div class="question-box alarm-box">
+                <h1 style="font-size: 24px; margin: 10px 0; color: #fff; text-shadow: none;">🚨 ALARM 🚨</h1>
+                <p style="color: #fff; font-size: 12px; line-height: 1.8; margin-top: 15px;">
+                    <b>RELAXO BLOCKIERT DEN WEG!</b><br><br>
+                    Alle sofort zusammenkommen, Gläser füllen und anstoßen!<br><br>
+                    <i>Wer als Letztes beim Bräutigam ist, trinkt doppelt!</i>
+                </p>
+            </div>
+            
+            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Gefahr gebannt (Menü)</button>
         </div>
 
         <!-- === SONDERBONBON TRACKER === -->
