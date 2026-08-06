@@ -253,7 +253,7 @@
         let appData = { totalPeople: 5, expenses: [] };
 
         function loadDataFromCloud() {
-            if (GOOGLE_SHEET_URL.includes("HIER_DEINE_URL")) {
+            if (GOOGLE_SHEET_URL.includes("https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP")) {
                 document.getElementById('syncStatus').innerText = "⚠️ FEHLER: URL FEHLT IM CODE!";
                 document.getElementById('syncStatus').style.color = "#ff4444";
                 return;
