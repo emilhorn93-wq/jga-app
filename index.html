@@ -15,11 +15,10 @@
         /* === HINTERGRUND & ALLGEMEINES === */
         body {
             background-color: var(--bg-color);
-            /* HIER IST DER NEUE LINK ZUM KARPADOR: */
             background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/129.png');
-            background-size: 60px; /* Größe der Karpador-Kacheln */
+            background-size: 60px;
             background-repeat: repeat; 
-            image-rendering: pixelated; /* Macht ihn schön kantig/retro */
+            image-rendering: pixelated; 
             
             color: var(--text-color);
             font-family: 'Press Start 2P', cursive;
@@ -138,6 +137,7 @@
             font-size: 9px;
             margin-bottom: 10px;
             outline: none;
+            box-sizing: border-box;
         }
 
         /* Listen & Ergebnisse */
@@ -189,15 +189,18 @@
         <div class="corner corner-bl"><div class="pokeball-icon"></div></div>
         <div class="corner corner-br"><div class="pokeball-icon"></div></div>
 
+        <!-- === MENÜ === -->
         <div id="menu" class="page active">
             <h1>🍺 JGA Command Center 🍺</h1>
             <p>Willkommen zur legendärsten Tour des Jahres.</p>
             
             <button class="btn" onclick="showPage('kasse'); loadDataFromCloud();">💰 Katzekasse (Abrechnung)</button>
             <button class="btn" onclick="showPage('quiz')">🤓 Pokémon Hardcore-Quiz</button>
-            <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP');">📸 Beweismittel hochladen</button>
+            <button class="btn" onclick="showPage('roulette')">🎲 Relaxo Roulette</button>
+            <button class="btn" onclick="window.open('https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP?q=sharedwith:public%20parent:1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP', '_blank');">📸 Beweismittel hochladen</button>
         </div>
 
+        <!-- === KASSE === -->
         <div id="kasse" class="page">
             <h2 style="color: #ffcb05;">💰 Katzekasse</h2>
             <div id="syncStatus">Verbinde mit Server...</div>
@@ -221,9 +224,10 @@
             <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Zurück zum Menü</button>
         </div>
 
+        <!-- === QUIZ === -->
         <div id="quiz" class="page">
             <h2 style="color: #ffcb05;">🤓 Trainer Battle</h2>
-            <div id="progress" style="color:#aaa; margin-bottom: 10px; font-size: 8px;">Frage 1 / 1</div>
+            <div id="progress" style="color:#aaa; margin-bottom: 10px; font-size: 8px;">Frage 1 / 10</div>
             
             <div class="question-box">
                 <div id="question">Lade Daten...</div>
@@ -236,11 +240,24 @@
             <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Flucht (Menü)</button>
         </div>
 
+        <!-- === ROULETTE === -->
+        <div id="roulette" class="page">
+            <h2 style="color: #ffcb05;">🎲 Relaxo Roulette</h2>
+            <p>Traust du dich, den Pokéball zu werfen?</p>
+            
+            <div class="question-box" style="text-align: center; min-height: 80px; display: flex; align-items: center; justify-content: center;">
+                <b id="roulette-result" style="color: #fff; font-size: 11px;">Klicke unten, um dein Schicksal zu erfahren...</b>
+            </div>
+            
+            <button class="btn" style="background-color: #d32f2f;" onclick="spinRoulette()">🔴 Pokéball werfen!</button>
+            <button class="btn" style="margin-top: 30px; background-color: #444;" onclick="showPage('menu')">⬅️ Flucht (Menü)</button>
+        </div>
+
     </div>
 
     <script>
         // ==========================================
-        // ⚠️ DEINE GOOGLE URL HIER EINFÜGEN:
+        // ⚠️ DEINE GOOGLE URL HIER EINFÜGEN FÜR DIE KASSE:
         const GOOGLE_SHEET_URL = "HIER_DEINE_URL_EINFÜGEN";
         // ==========================================
 
@@ -249,11 +266,11 @@
             document.getElementById(pageId).classList.add('active');
         }
 
-        // --- CLOUD DATENBANK ---
+        // --- CLOUD DATENBANK FÜR KASSE ---
         let appData = { totalPeople: 5, expenses: [] };
 
         function loadDataFromCloud() {
-            if (GOOGLE_SHEET_URL.includes("https://drive.google.com/drive/folders/1KyXvmO1KYq_W5Ex_fIBuaQXRoGr0QUlP")) {
+            if (GOOGLE_SHEET_URL.includes("HIER_DEINE_URL")) {
                 document.getElementById('syncStatus').innerText = "⚠️ FEHLER: URL FEHLT IM CODE!";
                 document.getElementById('syncStatus').style.color = "#ff4444";
                 return;
@@ -341,13 +358,18 @@
             document.getElementById('splitResult').innerHTML = html + "</ul>";
         }
 
-        // --- QUIZ (EIGENE FRAGEN) ---
+        // --- QUIZ FRAGEN ---
         const questions = [
-            { 
-                question: "Hier kommt deine erste Frage rein?", 
-                answers: ["Falsch", "Richtig", "Falsch", "Falsch"], 
-                correct: 1 
-            }
+            { question: "Welches Pokémon hat die National-Dex Nummer #001?", answers: ["Glumanda", "Bisasam", "Schiggy", "Pikachu"], correct: 1 },
+            { question: "Wie viele Entwicklungen von Evoli gab es in der 1. Generation?", answers: ["3", "5", "8", "1"], correct: 0 },
+            { question: "Welches Item wird benötigt, um ein Alpollo zu Gengar zu entwickeln?", answers: ["Mondstein", "Keines (Tausch)", "Finsterstein", "Level 40"], correct: 1 },
+            { question: "Welcher Typ ist gegen Psycho-Attacken immun?", answers: ["Geist", "Unlicht", "Stahl", "Käfer"], correct: 1 },
+            { question: "Wie viele Orden braucht man für die Pokémon-Liga?", answers: ["6", "10", "12", "8"], correct: 3 },
+            { question: "Welches Pokémon wiegt am meisten?", answers: ["Relaxo", "Stahlos", "Cosmovum", "Groudon"], correct: 2 },
+            { question: "In welcher Stadt findet man das Rocket-Gamer-Paradies (Casino)?", answers: ["Saffronia City", "Prismania City", "Zinnoberinsel", "Azuria City"], correct: 1 },
+            { question: "Wie hieß der Rivale in der Edition Gold/Silber standardmäßig?", answers: ["Blue", "Gary", "Silver", "Eich"], correct: 2 },
+            { question: "Welches Pokémon ist ein 'Fossil-Pokémon'?", answers: ["Aerodactyl", "Garados", "Dragoran", "Arkani"], correct: 0 },
+            { question: "Wer ist der 'Gott' aller Pokémon?", answers: ["Mewtu", "Arceus", "Ho-Oh", "Dummisel"], correct: 1 }
         ];
 
         let currentQ = 0;
@@ -394,6 +416,38 @@
         }
         
         showQuestion();
+
+        // --- RELAXO ROULETTE LOGIK ---
+        const rouletteTasks = [
+            "💧 Karpador-Platscher: Alle trinken einen kräftigen Schluck Wasser!",
+            "🔥 Glumanda: Der Bräutigam trinkt einen Shot (Scharf/Kräuter)!",
+            "⚡ Pikachu-Schock: Der Letzte, der die Hand hebt, trinkt 2 Schlucke!",
+            "🛡️ Schutzschild: Bestimme eine Person, die sofort trinken muss.",
+            "👥 Doppelkampf: Wähle einen Trink-Buddy. Wenn du in der nächsten Stunde trinkst, muss er auch!",
+            "🔄 Tausch: Tausche dein Getränk für 5 Minuten mit der Person links von dir.",
+            "😴 Relaxo: Du setzt eine Runde aus und darfst nicht trinken.",
+            "🐛 Smettbo-Stachelspore: Alle frieren sofort ein! Wer sich als Erstes bewegt oder lacht, trinkt.",
+            "🟣 Ditto-Kopie: Mache das nach, was der Bräutigam als Nächstes macht. Wer es vergisst, trinkt!",
+            "👻 Gengar-Fluch: Du darfst 10 Minuten lang nur noch flüstern. Wirst du beim normalen Sprechen erwischt: 3 Schlucke!",
+            "🪨 Kleinstein-Intensität: Stein-Schere-Papier gegen den Bräutigam. Der Verlierer trinkt!",
+            "🐍 Rettan-Wickel: Hake dich beim linken Nachbarn unter. Ihr müsst beide 2 Schlucke trinken, ohne den Arm zu lösen.",
+            "💨 Smogon-Rauchwolke: Der Letzte, der sich die Nase zuhält, muss trinken!",
+            "🧠 Mewtu-Telepathie: Erzähle eine kurze, peinliche Story über den Bräutigam oder trinke einen Shot!",
+            "🪙 Mauzi-Zahltag: Wer als Erstes eine Münze aus der Tasche holt und hochhält, darf 3 Schlucke verteilen.",
+            "🐦 Taubsi-Wirbelwind: Alle rücken einen Platz weiter (oder tauschen die Plätze). Der Letzte, der steht, trinkt."
+        ];
+
+        function spinRoulette() {
+            let resultText = document.getElementById('roulette-result');
+            resultText.innerText = "Würfle...";
+            resultText.style.color = "#aaa";
+            
+            setTimeout(() => {
+                let randomIndex = Math.floor(Math.random() * rouletteTasks.length);
+                resultText.innerText = rouletteTasks[randomIndex];
+                resultText.style.color = "#ffcb05";
+            }, 600);
+        }
     </script>
 </body>
 </html>
